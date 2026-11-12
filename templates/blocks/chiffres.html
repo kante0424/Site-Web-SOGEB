@@ -1,2 +1,2 @@
 {% if value.titre %}<h2>{{ value.titre }}</h2>{% endif %}
-<ul class="chiffres">{% for c in value.chiffres %}<li><span class="chiffres__valeur">{{ c.valeur }}{% if c.unite %}<small> {{ c.unite }}</small>{% endif %}</span><span class="chiffres__libelle">{{ c.libelle }}</span></li>{% endfor %}</ul>
+<ul class="chiffres">{% for c in value.chiffres %}<li><span class="chiffres__valeur" data-compteur="{{ c.valeur }}">{{ c.valeur }}{% if c.unite %}<small> {{ c.unite }}</small>{% endif %}</span><span class="chiffres__libelle">{{ c.libelle }}</span></li>{% endfor %}</ul>

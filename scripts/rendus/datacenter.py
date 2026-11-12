@@ -91,8 +91,8 @@ def face_baie(z, y, cote):
         dist = np.sqrt((du / 0.0032) ** 2 + (dv / 0.0032) ** 2)
         allume = present & (dist < 1.0) & (hash2(idx, iu, graine + 40 + k) < 0.9)
         t = hash2(idx, iu // 2, graine + 60 + k)
-        teinte = np.where(t[..., None] < 0.72, [0.15, 1.0, 0.35],
-                          np.where(t[..., None] < 0.9, [0.25, 0.55, 1.0], [1.0, 0.62, 0.08]))
+        teinte = np.where(t[..., None] < 0.82, [0.12, 1.0, 0.38],
+                          np.where(t[..., None] < 0.92, [1.0, 0.72, 0.1], [0.25, 0.6, 1.0]))
         emission[allume] = teinte[allume] * 6.0
 
     # au-dessus des baies : chemin de câbles jaune puis mur sombre
@@ -104,6 +104,8 @@ def face_baie(z, y, cote):
     couleur[bord_chemin] = [0.2, 0.16, 0.03]
     # plinthe
     couleur[y <= 0.05] = [0.015, 0.015, 0.015]
+    # liseré lumineux vert au pied des baies
+    emission[(y > 0.012) & (y <= 0.03)] = [0.05, 0.75, 0.3]
     return couleur, emission
 
 
@@ -127,7 +129,7 @@ def plafond(x, z):
     emission = np.zeros(x.shape + (3,))
     zz = np.mod(z, 3.0)
     lum = (np.abs(np.abs(x) - 0.45) < 0.035) & (zz < 2.85)
-    emission[lum] = [4.2, 4.5, 4.7]
+    emission[lum] = [3.9, 4.7, 4.3]
     cadre = (np.abs(np.abs(x) - 0.45) < 0.055) & ~lum
     couleur[cadre] = 0.25
     # dalles de plafond
@@ -149,6 +151,7 @@ def tracer(ox, oy, oz, dx, dy, dz, profondeur=0):
     px, py, pz = ox + dx * t, oy + dy * t, oz + dz * t
     couleur = np.zeros(dx.shape + (3,))
     emission = np.zeros(dx.shape + (3,))
+    led = np.zeros(dx.shape + (3,))
     n = [np.zeros_like(dx) for _ in range(3)]
 
     for cote, k in ((-1, 0), (1, 1)):
@@ -156,6 +159,7 @@ def tracer(ox, oy, oz, dx, dy, dz, profondeur=0):
         if m.any():
             c, e = face_baie(pz[m], py[m], cote)
             couleur[m], emission[m] = c, e
+            led[m] = e
             n[0][m] = -cote
     m = quoi == 2
     couleur[m] = sol(px[m], pz[m])
@@ -173,8 +177,8 @@ def tracer(ox, oy, oz, dx, dy, dz, profondeur=0):
     lum = eclairage(px, py, pz, n[0], n[1], n[2])
     rendu = couleur * lum[..., None] + emission
     # brouillard léger
-    brume = 1 - np.exp(-t / 30)
-    rendu = rendu * (1 - brume[..., None]) + np.array([0.07, 0.085, 0.09]) * brume[..., None]
+    brume = 1 - np.exp(-t / 40)
+    rendu = rendu * (1 - brume[..., None]) + np.array([0.05, 0.1, 0.075]) * brume[..., None]
 
     if profondeur == 0:
         reflet = np.zeros_like(rendu)
@@ -184,8 +188,39 @@ def tracer(ox, oy, oz, dx, dy, dz, profondeur=0):
             fresnel = 0.1 + 0.35 * (1 - np.clip(-dy[m] * 4, 0, 1)) ** 3
             rendu[m] = rendu[m] * (1 - fresnel[..., None] * 0.4)
             reflet[m] = r * fresnel[..., None]
-        return rendu, reflet
+        brume_led = np.exp(-t / 30)[..., None]
+        return rendu, reflet, led * brume_led
     return rendu
+
+
+def ecrire_voyants(sortie, led):
+    """Gabarit SVG superposé à l'image : quelques voyants des baies qui clignotent."""
+    from pathlib import Path
+
+    from scipy.ndimage import center_of_mass, label
+
+    lum = led.max(-1)
+    zones, nb = label(lum > 0.6)
+    centres = center_of_mass(lum, zones, range(1, nb + 1))
+    voyants = []
+    for i, (cy, cx) in enumerate(centres):
+        y, x = int(cy), int(cx)
+        if 0 < x < L and 0 < y < H:
+            taille = (zones == i + 1).sum() if nb < 4000 else 4
+            voyants.append((cx, cy, led[y, x] / max(led[y, x].max(), 1e-6), taille))
+    rng.shuffle(voyants)
+    nom = Path(sortie).name
+    gabarit = Path(__file__).resolve().parents[2] / "templates" / "includes" / f"animation_{nom}.html"
+    lignes = ["{# Généré par scripts/rendus/datacenter.py : ne pas modifier à la main. #}",
+              f'<svg class="voyants" viewBox="0 0 {L} {H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">']
+    for cx, cy, c, taille in voyants[:70]:
+        r = float(np.clip(np.sqrt(taille) * 0.9, 1.6, 5))
+        hexa = "#%02x%02x%02x" % tuple(int(min(1, v) * 255) for v in c)
+        lignes.append(f'<g style="--d:{rng.uniform(0, 8):.2f}s;--t:{rng.uniform(1.4, 4.5):.2f}s">'
+                      f'<circle cx="{cx:.0f}" cy="{cy:.0f}" r="{r * 3:.1f}" fill="{hexa}" opacity=".3"/>'
+                      f'<circle cx="{cx:.0f}" cy="{cy:.0f}" r="{r:.1f}" fill="{hexa}"/></g>')
+    lignes.append("</svg>")
+    gabarit.write_text("\n".join(lignes) + "\n", encoding="utf-8")
 
 
 def main(sortie):
@@ -200,12 +235,14 @@ def main(sortie):
     dy, dz = dy * np.cos(tangage) - dz * np.sin(tangage), dy * np.sin(tangage) + dz * np.cos(tangage)
     dx, dz = dx * np.cos(lacet) + dz * np.sin(lacet), -dx * np.sin(lacet) + dz * np.cos(lacet)
     nrm = np.sqrt(dx * dx + dy * dy + dz * dz)
-    img, reflet = tracer(np.full_like(dx, camx), np.full_like(dx, camy), np.full_like(dx, camz),
+    img, reflet, led = tracer(np.full_like(dx, camx), np.full_like(dx, camy), np.full_like(dx, camz),
                          dx / nrm, dy / nrm, dz / nrm)
 
     # réduction (anti-crénelage), puis reflet du sol légèrement flou (sol satiné)
     img = img.reshape(H, SUR, L, SUR, 3).mean((1, 3))
     reflet = reflet.reshape(H, SUR, L, SUR, 3).mean((1, 3))
+    led = led.reshape(H, SUR, L, SUR, 3).mean((1, 3))
+    ecrire_voyants(sortie, led)
     img = img + gaussian_filter(reflet, (5, 2.5, 0))
     # halo lumineux des sources
     lumineux = np.clip(img - 0.9, 0, None)
@@ -220,7 +257,7 @@ def main(sortie):
     img *= 1.5
     img = img / (1 + img)
     img = img ** (1 / 1.9)
-    img *= np.array([0.96, 1.0, 1.0])
+    img *= np.array([0.86, 1.04, 0.92])
     # vignettage et grain
     vign = 1 - 0.38 * (((xx - L / 2) / (L / 2)) ** 2 + ((yy - H / 2) / (H / 2)) ** 2) ** 1.4
     img *= vign[..., None]
