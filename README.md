@@ -50,7 +50,7 @@ page, que le formulaire de contact fonctionne et bloque les robots, et qu'un con
 | `templates/` | Gabarits HTML : `base.html`, morceaux réutilisés (`includes/`), affichage des blocs (`blocks/`) |
 | `static/` | Feuille de style aux couleurs de la charte, polices Montserrat et Barlow Condensed, logo, scripts du menu mobile et des animations |
 | `docker/` | Configuration Nginx (HTTPS, en-têtes de sécurité) et emplacement des certificats |
-| `scripts/` | `sauvegarde.sh` (base + médias, 30 jours), `deployer.sh` (mise à jour), `generer_carte_guinee.py` (carte de l'accueil) |
+| `scripts/` | `sauvegarde.sh` (base + médias, 30 jours), `deployer.sh` (mise à jour), `generer_carte_guinee.py` et `generer_illustrations.py` (carte et illustrations) |
 
 ### Ajouter un champ à un type de page
 

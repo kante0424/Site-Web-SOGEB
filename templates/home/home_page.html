@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags sogeb_tags %}
+{% load static wagtailcore_tags wagtailimages_tags sogeb_tags %}
 {% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}SOGEB – {{ page.accroche|sans_asterisques }}{% endif %}{% endblock %}
 {% block body_class %}page-accueil{% endblock %}
 {% block content %}
@@ -48,8 +48,35 @@
 </section>
 {% endif %}
 
-{% if page.missions %}
+{% if page.presentation_titre %}
 <section class="section">
+  <div class="conteneur presentation">
+    <div class="presentation__visuel anime">
+      <figure class="visuel visuel--principal">
+        {% if page.presentation_image %}{% picture page.presentation_image format-{webp,jpeg} fill-900x700 loading="lazy" alt="" %}
+        {% else %}<img src="{% static 'img/illustrations/datacenter.svg' %}" alt="" width="900" height="600" loading="lazy">{% endif %}
+      </figure>
+      <figure class="visuel visuel--secondaire" aria-hidden="true"><img src="{% static 'img/illustrations/fibre.svg' %}" alt="" width="600" height="400" loading="lazy"></figure>
+      <div class="presentation__badge"><strong>Tier III</strong><span>Data center national</span></div>
+    </div>
+    <div class="presentation__texte">
+      <p class="surtitre surtitre--vert">Qui sommes-nous</p>
+      <h2 class="section__titre">{{ page.presentation_titre }}</h2>
+      <p class="presentation__lead">{{ page.presentation_texte }}</p>
+      {% if points_presentation %}
+      <ul class="liste-coches">{% for p in points_presentation %}<li>{% icone "bouclier" 18 %}{{ p }}</li>{% endfor %}</ul>
+      {% endif %}
+      <div class="presentation__actions">
+        {% if page_sogeb %}<a class="bouton" href="{% pageurl page_sogeb %}">Découvrir la SOGEB {% icone "fleche" 18 %}</a>{% endif %}
+        {% if page_missions %}<a class="lien-fleche" href="{% pageurl page_missions %}">Nos missions {% icone "fleche" 16 %}</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if page.missions %}
+<section class="section section--teinte">
   <div class="conteneur">
     <header class="section__entete">
       <p class="surtitre surtitre--vert">Nos missions</p>
@@ -64,11 +91,12 @@
       </article>
       {% endfor %}
     </div>
+    {% if page_missions %}<p class="section__suite"><a class="lien-fleche" href="{% pageurl page_missions %}">En savoir plus sur nos missions {% icone "fleche" 16 %}</a></p>{% endif %}
   </div>
 </section>
 {% endif %}
 
-<section class="section section--teinte">
+<section class="section">
   <div class="conteneur">
     <header class="section__entete">
       <p class="surtitre surtitre--vert">Nos infrastructures</p>
@@ -76,25 +104,37 @@
     </header>
     <div class="grille grille--2">
       <article class="carte carte--pilier anime">
+        <div class="carte__vignette carte__vignette--large">
+          {% if page.backbone_page.specific.image %}{% picture page.backbone_page.specific.image format-{webp,jpeg} fill-900x480 loading="lazy" alt="" %}
+          {% else %}<img src="{% static 'img/illustrations/fibre.svg' %}" alt="" width="900" height="600" loading="lazy">{% endif %}
+        </div>
+        <div class="carte__corps">
         <span class="tuile-icone">{% icone "reseau" 28 %}</span>
         <p class="etiquette">Transport</p>
         <h3>{% if page.backbone_page %}<a href="{% pageurl page.backbone_page %}">{{ page.backbone_titre }}</a>{% else %}{{ page.backbone_titre }}{% endif %}</h3>
         <p>{{ page.backbone_texte }}</p>
         {% if page.backbone_page %}<span class="lien-fleche" aria-hidden="true">Découvrir le Backbone {% icone "fleche" 16 %}</span>{% endif %}
+        </div>
       </article>
       <article class="carte carte--pilier carte--pilier-or anime">
+        <div class="carte__vignette carte__vignette--large">
+          {% if page.datacenter_page.specific.image %}{% picture page.datacenter_page.specific.image format-{webp,jpeg} fill-900x480 loading="lazy" alt="" %}
+          {% else %}<img src="{% static 'img/illustrations/datacenter.svg' %}" alt="" width="900" height="600" loading="lazy">{% endif %}
+        </div>
+        <div class="carte__corps">
         <span class="tuile-icone tuile-icone--or">{% icone "serveur" 28 %}</span>
         <p class="etiquette">Hébergement</p>
         <h3>{% if page.datacenter_page %}<a href="{% pageurl page.datacenter_page %}">{{ page.datacenter_titre }}</a>{% else %}{{ page.datacenter_titre }}{% endif %}</h3>
         <p>{{ page.datacenter_texte }}</p>
         {% if page.datacenter_page %}<span class="lien-fleche" aria-hidden="true">Découvrir le data center {% icone "fleche" 16 %}</span>{% endif %}
+        </div>
       </article>
     </div>
   </div>
 </section>
 
 {% if services %}
-<section class="section">
+<section class="section section--teinte">
   <div class="conteneur">
     <header class="section__entete section__entete--ligne">
       <div>
@@ -110,8 +150,6 @@
 
 {% if page.corps %}<section class="section"><div class="conteneur conteneur--texte">{% include "includes/corps.html" with valeur=page.corps %}</div></section>{% endif %}
 
-{% include "includes/valeurs.html" %}
-
 {% if dernieres_actualites %}
 <section class="section">
   <div class="conteneur">
@@ -123,6 +161,8 @@
   </div>
 </section>
 {% endif %}
+
+{% include "includes/valeurs.html" %}
 
 {% if page_services %}
 <section class="section section--compacte">

@@ -8,6 +8,7 @@ officiels transmis par la Direction marketing et communication ; ils restent mod
 import json
 
 from django.contrib.auth.models import Group, Permission
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from wagtail.models import (
@@ -138,6 +139,7 @@ class Command(BaseCommand):
             Valeur.objects.create(nom=nom, description=description, icone=icone, ordre=i)
 
         self.creer_roles(accueil)
+        call_command("completer_sogeb")
         self.stdout.write(self.style.SUCCESS("Site SOGEB initialisé."))
 
     # ------------------------------------------------------------------ pages

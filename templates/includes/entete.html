@@ -28,7 +28,15 @@
       <ul>
         {% for item in menu %}
           {% if not item|est_contact %}
-          <li><a href="{% pageurl item %}"{% if page and item|est_dans:page %} aria-current="page"{% endif %}>{{ item.title }}</a></li>
+          {% with enfants=item.get_children.live.public.in_menu %}
+          <li{% if enfants %} class="menu__groupe"{% endif %}><a href="{% pageurl item %}"{% if page and item|est_dans:page %} aria-current="page"{% endif %}>{{ item.title }}</a>
+            {% if enfants %}
+            <ul class="sous-menu">
+              {% for e in enfants %}<li><a href="{% pageurl e %}"{% if page and page.pk == e.pk %} aria-current="page"{% endif %}>{{ e.title }}</a></li>{% endfor %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endwith %}
           {% endif %}
         {% endfor %}
       </ul>

@@ -1,14 +1,18 @@
-{% load wagtailcore_tags sogeb_tags %}{% accueil as racine %}
-<section class="bandeau">
+{% load static wagtailcore_tags wagtailimages_tags sogeb_tags %}{% accueil as racine %}
+<section class="bandeau{% if image or illustration %} bandeau--visuel{% endif %}">
   <div class="conteneur bandeau__inner">
-    <nav class="ariane" aria-label="Fil d'Ariane">
-      <ol>
-        <li><a href="{% if racine %}{% pageurl racine %}{% else %}/{% endif %}">Accueil</a></li>
-        {% if page.get_parent.depth > 2 %}<li><a href="{% pageurl page.get_parent %}">{{ page.get_parent.title }}</a></li>{% endif %}
-        <li aria-current="page">{{ page.title }}</li>
-      </ol>
-    </nav>
-    <h1>{{ page.title }}</h1>
-    {% if introduction %}<p class="bandeau__intro">{{ introduction }}</p>{% endif %}
+    <div class="bandeau__texte">
+      <nav class="ariane" aria-label="Fil d'Ariane">
+        <ol>
+          <li><a href="{% if racine %}{% pageurl racine %}{% else %}/{% endif %}">Accueil</a></li>
+          {% if page.get_parent.depth > 2 %}<li><a href="{% pageurl page.get_parent %}">{{ page.get_parent.title }}</a></li>{% endif %}
+          <li aria-current="page">{{ page.title }}</li>
+        </ol>
+      </nav>
+      <h1>{{ page.title }}</h1>
+      {% if introduction %}<p class="bandeau__intro">{{ introduction }}</p>{% endif %}
+    </div>
+    {% if image %}<figure class="bandeau__visuel">{% picture image format-{webp,jpeg} fill-800x560 alt="" fetchpriority="high" %}</figure>
+    {% elif illustration %}<figure class="bandeau__visuel"><img src="{% static 'img/illustrations/'|add:illustration|add:'.svg' %}" alt="" width="800" height="533"></figure>{% endif %}
   </div>
 </section>
