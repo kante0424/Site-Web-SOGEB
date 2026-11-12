@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+{% block content %}
+{% include "includes/en_tete_page.html" with introduction=page.resume %}
+<div class="section"><div class="conteneur conteneur--texte">
+  <p class="etiquette">{{ page.get_pilier_display }}</p>
+  {% if page.publics %}<p class="encadre"><strong>Pour qui :</strong> {{ page.publics }}</p>{% endif %}
+  {% if page.image %}<figure class="figure">{% picture page.image format-{webp,jpeg} width-1200 %}</figure>{% endif %}
+  {% include "includes/corps.html" with valeur=page.corps %}
+  <div class="appel">
+    <p>Conditions et tarifs sur demande.</p>
+    {% for p in page.get_site.root_page.get_children.live %}{% if p.slug == "contact" %}<a class="bouton" href="{% pageurl p %}">Demander une offre</a>{% endif %}{% endfor %}
+  </div>
+</div></div>
+{% endblock %}

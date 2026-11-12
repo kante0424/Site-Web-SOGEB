@@ -1,0 +1,12 @@
+.env
+*.sqlite3
+media/
+staticfiles/
+__pycache__/
+*.pyc
+.venv/
+venv/
+backups/
+docker/certs/*
+!docker/certs/.gitkeep
+.site_initialise

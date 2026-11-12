@@ -1,0 +1,4 @@
+{% load wagtailimages_tags %}<figure class="figure">
+  {% if value.texte_alternatif %}{% picture value.image format-{webp,jpeg} width-1200 alt=value.texte_alternatif loading="lazy" %}{% else %}{% picture value.image format-{webp,jpeg} width-1200 loading="lazy" %}{% endif %}
+  {% if value.legende %}<figcaption>{{ value.legende }}</figcaption>{% endif %}
+</figure>

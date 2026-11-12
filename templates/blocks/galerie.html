@@ -1,0 +1,2 @@
+{% load wagtailimages_tags %}<h2>{{ value.titre }}</h2>
+<div class="galerie">{% for img in value.images %}{% image img original as full %}<a href="{{ full.url }}">{% picture img format-{webp,jpeg} fill-480x360 loading="lazy" %}</a>{% endfor %}</div>

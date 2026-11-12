@@ -1,0 +1,8 @@
+{% load wagtailcore_tags %}
+<article class="carte carte--service">
+  <div class="carte__corps">
+    <h3 class="carte__titre"><a href="{% pageurl service %}">{{ service.title }}</a></h3>
+    <p>{{ service.resume }}</p>
+    {% if service.publics %}<p class="carte__publics">Pour : {{ service.publics }}</p>{% endif %}
+  </div>
+</article>

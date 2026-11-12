@@ -1,0 +1,9 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<article class="carte carte--article">
+  {% if article.image %}{% picture article.image format-{webp,jpeg} fill-640x400 loading="lazy" class="carte__image" %}{% endif %}
+  <div class="carte__corps">
+    <p class="etiquette">{{ article.get_categorie_display }} · <time datetime="{{ article.date_publication|date:'Y-m-d' }}">{{ article.date_publication|date:"j F Y" }}</time></p>
+    <h3 class="carte__titre"><a href="{% pageurl article %}">{{ article.title }}</a></h3>
+    <p>{{ article.chapo|truncatewords:30 }}</p>
+  </div>
+</article>

@@ -1,0 +1,44 @@
+{% load static wagtailcore_tags sogeb_tags %}{% accueil as racine %}{% menu_principal as menu %}
+{% with c=settings.core.SiteSettings %}
+<footer class="pied">
+  <div class="conteneur pied__grille">
+    <div>
+      <img src="{% static 'img/logo-sogeb.png' %}" alt="" width="56" height="56" loading="lazy">
+      <p class="pied__nom">Société de Gestion et d'Exploitation du Backbone National</p>
+      <p class="pied__signature">{{ c.signature }}</p>
+    </div>
+    {% if c.adresse or c.telephone_principal or c.email_contact %}
+    <div>
+      <h2 class="pied__titre">Nous joindre</h2>
+      <ul class="pied__liste">
+        {% if c.adresse %}<li>{{ c.adresse|linebreaksbr }}</li>{% endif %}
+        {% if c.telephone_principal %}<li><a href="tel:{{ c.telephone_principal|cut:' ' }}">{{ c.telephone_principal }}</a></li>{% endif %}
+        {% if c.telephone_secondaire %}<li><a href="tel:{{ c.telephone_secondaire|cut:' ' }}">{{ c.telephone_secondaire }}</a></li>{% endif %}
+        {% if c.email_contact %}<li><a href="mailto:{{ c.email_contact }}">{{ c.email_contact }}</a></li>{% endif %}
+        {% if c.horaires %}<li>{{ c.horaires }}</li>{% endif %}
+      </ul>
+    </div>
+    {% endif %}
+    <div>
+      <h2 class="pied__titre">Navigation</h2>
+      <ul class="pied__liste">
+        {% for item in menu %}<li><a href="{% pageurl item %}">{{ item.title }}</a></li>{% endfor %}
+      </ul>
+    </div>
+    {% if c.facebook or c.instagram or c.linkedin %}
+    <div>
+      <h2 class="pied__titre">Suivez-nous</h2>
+      <ul class="pied__liste">
+        {% if c.facebook %}<li><a href="{{ c.facebook }}" rel="noopener" target="_blank">Facebook</a></li>{% endif %}
+        {% if c.instagram %}<li><a href="{{ c.instagram }}" rel="noopener" target="_blank">Instagram</a></li>{% endif %}
+        {% if c.linkedin %}<li><a href="{{ c.linkedin }}" rel="noopener" target="_blank">LinkedIn</a></li>{% endif %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+  <div class="conteneur pied__bas">
+    <span>© {% now "Y" %} SOGEB S.A</span>
+    {% if racine %}{% for p in racine.get_children.live %}{% if p.slug == "mentions-legales" or p.slug == "confidentialite" %}<a href="{% pageurl p %}">{{ p.title }}</a>{% endif %}{% endfor %}{% endif %}
+  </div>
+</footer>
+{% endwith %}

@@ -1,0 +1,1 @@
+{% load wagtailcore_tags %}{% if value.page %}<a class="bouton" href="{% pageurl value.page %}">{{ value.texte }}</a>{% elif value.lien_externe %}<a class="bouton" href="{{ value.lien_externe }}" rel="noopener">{{ value.texte }}</a>{% endif %}

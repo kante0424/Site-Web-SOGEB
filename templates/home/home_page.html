@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags sogeb_tags %}
+{% block body_class %}page-accueil{% endblock %}
+{% block content %}
+<section class="hero{% if page.image_banniere %} hero--image{% endif %}">
+  {% if page.image_banniere %}{% picture page.image_banniere format-{webp,jpeg} fill-1920x900 class="hero__image" alt="" fetchpriority="high" %}{% endif %}
+  <div class="conteneur hero__contenu">
+    <p class="hero__surtitre">Société de Gestion et d'Exploitation du Backbone National</p>
+    <h1>{{ page.accroche }}</h1>
+    {% if page.sous_titre %}<p class="hero__texte">{{ page.sous_titre }}</p>{% endif %}
+    {% if page.bouton_page %}<a class="bouton bouton--or" href="{% pageurl page.bouton_page %}">{{ page.bouton_texte }}</a>{% endif %}
+  </div>
+</section>
+
+{% chiffres_cles as chiffres %}
+{% if chiffres %}
+<section class="bande-chiffres" aria-label="Chiffres clés">
+  <div class="conteneur"><ul class="chiffres">
+    {% for c in chiffres %}<li><span class="chiffres__valeur">{{ c.valeur }}{% if c.unite %}<small> {{ c.unite }}</small>{% endif %}</span><span class="chiffres__libelle">{{ c.libelle }}</span></li>{% endfor %}
+  </ul></div>
+</section>
+{% endif %}
+
+<section class="section">
+  <div class="conteneur">
+    <h2 class="section__titre">Transport &amp; hébergement de données</h2>
+    <div class="piliers">
+      <article class="pilier">
+        <p class="etiquette">Transport</p>
+        <h3>{{ page.backbone_titre }}</h3>
+        <p>{{ page.backbone_texte }}</p>
+        {% if page.backbone_page %}<a class="lien-fleche" href="{% pageurl page.backbone_page %}">Découvrir le Backbone</a>{% endif %}
+      </article>
+      <article class="pilier pilier--or">
+        <p class="etiquette">Hébergement</p>
+        <h3>{{ page.datacenter_titre }}</h3>
+        <p>{{ page.datacenter_texte }}</p>
+        {% if page.datacenter_page %}<a class="lien-fleche" href="{% pageurl page.datacenter_page %}">Découvrir le data center</a>{% endif %}
+      </article>
+    </div>
+  </div>
+</section>
+
+{% if page.corps %}<section class="section"><div class="conteneur conteneur--texte">{% include "includes/corps.html" with valeur=page.corps %}</div></section>{% endif %}
+
+{% include "includes/valeurs.html" %}
+
+{% if dernieres_actualites %}
+<section class="section">
+  <div class="conteneur">
+    <h2 class="section__titre">Dernières actualités</h2>
+    <div class="grille-cartes">{% for article in dernieres_actualites %}{% include "includes/carte_article.html" %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,2 @@
+<h2>{{ value.titre }}</h2>
+<ul class="documents">{% for d in value.documents %}<li><a href="{{ d.document.url }}">{{ d.document.title }}</a> <span class="documents__type">{{ d.document.file_extension|upper }}</span>{% if d.description %}<p>{{ d.description }}</p>{% endif %}</li>{% endfor %}</ul>

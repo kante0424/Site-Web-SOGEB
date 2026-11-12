@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load wagtailimages_tags %}
+{% block content %}
+{% include "includes/en_tete_page.html" with introduction=page.introduction %}
+<div class="section"><div class="conteneur conteneur--texte">
+  {% if page.image %}<figure class="figure">{% picture page.image format-{webp,jpeg} width-1200 %}</figure>{% endif %}
+  {% include "includes/corps.html" with valeur=page.corps %}
+</div></div>
+{% if page.afficher_valeurs %}{% include "includes/valeurs.html" %}{% endif %}
+{% endblock %}

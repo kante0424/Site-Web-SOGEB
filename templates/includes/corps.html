@@ -1,0 +1,2 @@
+{% load wagtailcore_tags %}
+{% for bloc in valeur %}<div class="bloc bloc--{{ bloc.block_type }}">{% include_block bloc %}</div>{% endfor %}

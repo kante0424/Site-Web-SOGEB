@@ -1,0 +1,10 @@
+{% load wagtailcore_tags %}
+<section class="bandeau">
+  <div class="conteneur">
+    {% if page.get_parent.depth > 2 %}
+    <nav class="ariane" aria-label="Fil d'Ariane"><a href="{% pageurl page.get_parent %}">{{ page.get_parent.title }}</a> / <span>{{ page.title }}</span></nav>
+    {% endif %}
+    <h1>{{ page.title }}</h1>
+    {% if introduction %}<p class="bandeau__intro">{{ introduction }}</p>{% endif %}
+  </div>
+</section>

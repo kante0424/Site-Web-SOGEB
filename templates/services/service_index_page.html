@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "includes/en_tete_page.html" with introduction=page.introduction %}
+{% for groupe in groupes %}{% if groupe.services %}
+<section class="section{% if forloop.counter == 2 %} section--teinte{% endif %}">
+  <div class="conteneur">
+    <h2 class="section__titre">{{ groupe.titre }}</h2>
+    <div class="grille-cartes">{% for service in groupe.services %}{% include "includes/carte_service.html" %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}{% endfor %}
+{% endblock %}

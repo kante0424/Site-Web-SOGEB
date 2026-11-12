@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block content %}
+{% include "includes/en_tete_page.html" with introduction=page.introduction %}
+{% with c=settings.core.SiteSettings %}
+<div class="section"><div class="conteneur contact{% if not c.adresse and not c.telephone_principal and not c.email_contact %} contact--seul{% endif %}">
+  {% if c.adresse or c.telephone_principal or c.email_contact %}
+  <aside class="contact__infos">
+    <h2>Coordonnées</h2>
+    <dl>
+      {% if c.adresse %}<dt>Adresse</dt><dd>{{ c.adresse|linebreaksbr }}</dd>{% endif %}
+      {% if c.telephone_principal %}<dt>Téléphone</dt><dd><a href="tel:{{ c.telephone_principal|cut:' ' }}">{{ c.telephone_principal }}</a>{% if c.telephone_secondaire %}<br><a href="tel:{{ c.telephone_secondaire|cut:' ' }}">{{ c.telephone_secondaire }}</a>{% endif %}</dd>{% endif %}
+      {% if c.email_contact %}<dt>Courriel</dt><dd><a href="mailto:{{ c.email_contact }}">{{ c.email_contact }}</a></dd>{% endif %}
+      {% if c.horaires %}<dt>Horaires</dt><dd>{{ c.horaires }}</dd>{% endif %}
+    </dl>
+    {% if c.lien_carte %}<a class="lien-fleche" href="{{ c.lien_carte }}" rel="noopener" target="_blank">Voir le plan d'accès</a>{% endif %}
+  </aside>
+  {% endif %}
+  <form class="formulaire" action="{% pageurl page %}" method="post" novalidate>
+    <h2>Écrivez-nous</h2>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="champ{% if field.errors %} champ--erreur{% endif %}">
+        <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %} <span aria-hidden="true">*</span>{% endif %}</label>
+        {{ field }}
+        {% for e in field.errors %}<p class="champ__erreur">{{ e }}</p>{% endfor %}
+      </div>
+    {% endfor %}
+    <div class="piege" aria-hidden="true"><label for="site_web">Ne pas remplir</label><input type="text" id="site_web" name="site_web" tabindex="-1" autocomplete="off"></div>
+    <p class="formulaire__note">Les informations saisies servent uniquement à répondre à votre demande.</p>
+    <button class="bouton" type="submit">Envoyer le message</button>
+  </form>
+</div></div>
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "includes/en_tete_page.html" with introduction=page.introduction %}
+<div class="section"><div class="conteneur">
+  <nav class="filtres" aria-label="Filtrer par catégorie">
+    <a href="?"{% if not categorie_active %} aria-current="true"{% endif %}>Tout</a>
+    {% for code, nom in categories %}<a href="?categorie={{ code }}"{% if categorie_active == code %} aria-current="true"{% endif %}>{{ nom }}</a>{% endfor %}
+  </nav>
+  {% if articles %}
+    <div class="grille-cartes">{% for article in articles %}{% include "includes/carte_article.html" %}{% endfor %}</div>
+    {% if articles.paginator.num_pages > 1 %}
+    <nav class="pagination" aria-label="Pagination">
+      {% if articles.has_previous %}<a href="?page={{ articles.previous_page_number }}{% if categorie_active %}&categorie={{ categorie_active }}{% endif %}">Précédent</a>{% endif %}
+      <span>Page {{ articles.number }} sur {{ articles.paginator.num_pages }}</span>
+      {% if articles.has_next %}<a href="?page={{ articles.next_page_number }}{% if categorie_active %}&categorie={{ categorie_active }}{% endif %}">Suivant</a>{% endif %}
+    </nav>
+    {% endif %}
+  {% else %}
+    <p class="vide">Aucune publication pour le moment.</p>
+  {% endif %}
+</div></div>
+{% endblock %}

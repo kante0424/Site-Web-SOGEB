@@ -1,0 +1,13 @@
+{% load sogeb_tags %}{% valeurs as liste_valeurs %}
+{% if liste_valeurs %}
+<section class="section section--teinte">
+  <div class="conteneur">
+    <h2 class="section__titre">Nos valeurs</h2>
+    <ul class="valeurs">
+      {% for v in liste_valeurs %}
+      <li class="valeur valeur--{{ v.icone }}"><strong>{{ v.nom }}</strong><span>{{ v.description }}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}

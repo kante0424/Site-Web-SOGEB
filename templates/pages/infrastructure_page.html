@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% load wagtailimages_tags %}
+{% block content %}
+{% include "includes/en_tete_page.html" with introduction=page.introduction %}
+<div class="section"><div class="conteneur conteneur--texte">
+  {% if page.image %}<figure class="figure">{% picture page.image format-{webp,jpeg} width-1200 %}</figure>{% endif %}
+  {% include "includes/corps.html" with valeur=page.corps %}
+  {% if page.carte %}<figure class="figure"><h2>Carte du réseau</h2>{% picture page.carte format-{webp,png} width-1200 loading="lazy" %}</figure>{% endif %}
+</div></div>
+{% endblock %}
