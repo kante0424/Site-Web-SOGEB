@@ -25,7 +25,7 @@
     <figure class="carte-reseau">
       <figcaption class="carte-reseau__entete">
         <span>Réseau Backbone – vue d'ensemble</span>
-        <span class="carte-reseau__direct"><span class="point-pulse" aria-hidden="true"></span>Schéma illustratif</span>
+        <span class="carte-reseau__direct">Schéma illustratif</span>
       </figcaption>
       {% include "includes/carte_guinee.html" %}
       <div class="carte-reseau__legende" aria-hidden="true">
@@ -54,9 +54,9 @@
     <div class="presentation__visuel anime">
       <figure class="visuel visuel--principal">
         {% if page.presentation_image %}{% picture page.presentation_image format-{webp,jpeg} fill-900x700 loading="lazy" alt="" %}
-        {% else %}<img src="{% static 'img/illustrations/datacenter.svg' %}" alt="" width="900" height="600" loading="lazy">{% endif %}
+        {% else %}{% include "includes/illustration.html" with nom="datacenter" %}{% endif %}
       </figure>
-      <figure class="visuel visuel--secondaire" aria-hidden="true"><img src="{% static 'img/illustrations/fibre.svg' %}" alt="" width="600" height="400" loading="lazy"></figure>
+      <figure class="visuel visuel--secondaire" aria-hidden="true">{% include "includes/illustration.html" with nom="fibre" %}</figure>
       <div class="presentation__badge"><strong>Tier III</strong><span>Data center national</span></div>
     </div>
     <div class="presentation__texte">
@@ -79,8 +79,7 @@
 <section class="section section--teinte">
   <div class="conteneur">
     <header class="section__entete">
-      <p class="surtitre surtitre--vert">Nos missions</p>
-      <h2 class="section__titre">Au service de la connectivité nationale</h2>
+      <h2 class="section__titre">Nos missions</h2>
     </header>
     <div class="grille grille--4">
       {% for bloc in page.missions %}
@@ -99,14 +98,13 @@
 <section class="section">
   <div class="conteneur">
     <header class="section__entete">
-      <p class="surtitre surtitre--vert">Nos infrastructures</p>
       <h2 class="section__titre">Transport &amp; hébergement de données</h2>
     </header>
     <div class="grille grille--2">
       <article class="carte carte--pilier anime">
         <div class="carte__vignette carte__vignette--large">
           {% if page.backbone_page.specific.image %}{% picture page.backbone_page.specific.image format-{webp,jpeg} fill-900x480 loading="lazy" alt="" %}
-          {% else %}<img src="{% static 'img/illustrations/fibre.svg' %}" alt="" width="900" height="600" loading="lazy">{% endif %}
+          {% else %}{% include "includes/illustration.html" with nom="fibre" %}{% endif %}
         </div>
         <div class="carte__corps">
         <span class="tuile-icone">{% icone "reseau" 28 %}</span>
@@ -119,7 +117,7 @@
       <article class="carte carte--pilier carte--pilier-or anime">
         <div class="carte__vignette carte__vignette--large">
           {% if page.datacenter_page.specific.image %}{% picture page.datacenter_page.specific.image format-{webp,jpeg} fill-900x480 loading="lazy" alt="" %}
-          {% else %}<img src="{% static 'img/illustrations/datacenter.svg' %}" alt="" width="900" height="600" loading="lazy">{% endif %}
+          {% else %}{% include "includes/illustration.html" with nom="datacenter" %}{% endif %}
         </div>
         <div class="carte__corps">
         <span class="tuile-icone tuile-icone--or">{% icone "serveur" 28 %}</span>
@@ -138,8 +136,8 @@
   <div class="conteneur">
     <header class="section__entete section__entete--ligne">
       <div>
-        <p class="surtitre surtitre--vert">Nos services</p>
-        <h2 class="section__titre">Des solutions pour les opérateurs, entreprises et institutions</h2>
+        <h2 class="section__titre">Nos services</h2>
+        <p class="section__intro">Des solutions pour les opérateurs, les entreprises et les institutions.</p>
       </div>
       {% if page_services %}<a class="lien-fleche" href="{% pageurl page_services %}">Tous les services {% icone "fleche" 16 %}</a>{% endif %}
     </header>
@@ -154,8 +152,7 @@
 <section class="section">
   <div class="conteneur">
     <header class="section__entete">
-      <p class="surtitre surtitre--vert">Actualités</p>
-      <h2 class="section__titre">Dernières actualités</h2>
+      <h2 class="section__titre">Actualités</h2>
     </header>
     <div class="grille grille--3">{% for article in dernieres_actualites %}{% include "includes/carte_article.html" %}{% endfor %}</div>
   </div>

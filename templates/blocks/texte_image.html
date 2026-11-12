@@ -6,6 +6,6 @@
   </div>
   <figure class="visuel">
     {% if value.image %}{% picture value.image format-{webp,jpeg} fill-900x640 loading="lazy" alt="" %}
-    {% else %}<img src="{% static 'img/illustrations/'|add:value.illustration|add:'.svg' %}" alt="" width="900" height="600" loading="lazy">{% endif %}
+    {% else %}{% include "includes/illustration.html" with nom=value.illustration %}{% endif %}
   </figure>
 </div>

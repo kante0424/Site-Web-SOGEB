@@ -13,6 +13,6 @@
       {% if introduction %}<p class="bandeau__intro">{{ introduction }}</p>{% endif %}
     </div>
     {% if image %}<figure class="bandeau__visuel">{% picture image format-{webp,jpeg} fill-800x560 alt="" fetchpriority="high" %}</figure>
-    {% elif illustration %}<figure class="bandeau__visuel"><img src="{% static 'img/illustrations/'|add:illustration|add:'.svg' %}" alt="" width="800" height="533"></figure>{% endif %}
+    {% elif illustration %}<figure class="bandeau__visuel">{% include "includes/illustration.html" with nom=illustration prioritaire=1 %}</figure>{% endif %}
   </div>
 </section>

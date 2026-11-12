@@ -1,7 +1,7 @@
 {% load static wagtailcore_tags wagtailimages_tags sogeb_tags %}
 <article class="carte carte--article anime">
   <div class="carte__vignette">
-    {% if article.image %}{% picture article.image format-{webp,jpeg} fill-640x360 loading="lazy" class="carte__image" alt="" %}{% else %}<img src="{% static 'img/illustrations/reseau.svg' %}" alt="" width="640" height="427" loading="lazy">{% endif %}
+    {% if article.image %}{% picture article.image format-{webp,jpeg} fill-640x360 loading="lazy" class="carte__image" alt="" %}{% else %}{% include "includes/illustration.html" with nom="reseau" %}{% endif %}
     <span class="pastille pastille--{{ article.categorie }}">{{ article.get_categorie_display }}</span>
   </div>
   <div class="carte__corps">
