@@ -270,14 +270,30 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
 .carte__date { font-size: .82rem; color: var(--encre-3); font-weight: 600; margin-bottom: .4rem; }
 .carte--article h3 { font-size: 1.3rem; }
 
-/* ---------- Valeurs ---------- */
-.valeurs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-.valeur { background: #fff; border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 1.3rem 1.4rem; display: flex; gap: 1rem; align-items: flex-start; transition: transform .25s, box-shadow .25s; }
-.valeur:hover { transform: translateY(-3px); box-shadow: var(--ombre); }
-.valeur .tuile-icone { width: 46px; height: 46px; margin: 0; }
-.valeur > span:last-child { display: flex; flex-direction: column; gap: .15rem; }
-.valeur strong { font-family: var(--titres); font-size: 1.3rem; text-transform: uppercase; color: var(--vert-900); }
+/* ---------- Valeurs (une couleur par valeur) ---------- */
+.valeurs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
+.valeur { --c1: var(--vert-600); --c2: #3cc27a; --fond-c: var(--vert-50); position: relative; overflow: hidden; background: #fff; border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 1.6rem 1.5rem 1.5rem; display: flex; gap: 1.1rem; align-items: flex-start; transition: transform .25s, box-shadow .25s, background-color .25s; }
+.valeur::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: linear-gradient(180deg, var(--c1), var(--c2)); }
+.valeur:hover { transform: translateY(-4px); box-shadow: var(--ombre); background: var(--fond-c); }
+.valeur .tuile-icone { width: 54px; height: 54px; margin: 0; border-radius: 14px; color: #fff; background: linear-gradient(135deg, var(--c1), var(--c2)); box-shadow: 0 10px 20px -10px var(--c1); }
+.valeur:hover .tuile-icone { transform: rotate(-6deg) scale(1.08); }
+.valeur > span:last-child { display: flex; flex-direction: column; gap: .2rem; }
+.valeur strong { font-family: var(--titres); font-size: 1.4rem; text-transform: uppercase; color: var(--vert-900); }
 .valeur span span { font-size: .92rem; }
+.valeur--passion { --c1: #ce1126; --c2: #f0533e; --fond-c: #fdf0ef; }
+.valeur--disponibilite { --c1: #0d9541; --c2: #3cc27a; --fond-c: #eefaf2; }
+.valeur--rapidite { --c1: #e8a10c; --c2: #f9c64d; --fond-c: #fef8e7; }
+.valeur--fiabilite { --c1: #064d28; --c2: #0d9541; --fond-c: #eef6f1; }
+.valeur--solidarite { --c1: #0e7c86; --c2: #22b3ad; --fond-c: #ebf7f7; }
+.valeur--responsabilite { --c1: #4f8f1a; --c2: #8cc63f; --fond-c: #f3f9ea; }
+
+/* Missions : tuiles en dégradé, une couleur par mission */
+.grille--4 > .carte--mission:nth-child(4n+1) { --c1: var(--vert-700); --c2: var(--vert-600); }
+.grille--4 > .carte--mission:nth-child(4n+2) { --c1: #e8a10c; --c2: #f9c64d; }
+.grille--4 > .carte--mission:nth-child(4n+3) { --c1: #0e7c86; --c2: #22b3ad; }
+.grille--4 > .carte--mission:nth-child(4n+4) { --c1: #ce1126; --c2: #f0533e; }
+.carte--mission .tuile-icone { color: #fff; background: linear-gradient(135deg, var(--c1), var(--c2)); box-shadow: 0 10px 20px -10px var(--c1); }
+.carte--mission::after { background: linear-gradient(90deg, var(--c1, var(--vert-600)), var(--c2, var(--or-500))); }
 
 /* ---------- Accès par profil ---------- */
 .profils { display: flex; align-items: center; gap: 1rem 2rem; flex-wrap: wrap; justify-content: center; padding-top: clamp(2.5rem, 5vw, 4rem); }
