@@ -59,3 +59,17 @@ class SiteTests(TestCase):
         perms = page.permissions_for_user(user)
         self.assertTrue(perms.can_edit())
         self.assertFalse(perms.can_publish())
+
+    def test_missions_et_organigramme(self):
+        from apps.pages.models import OrganigrammePage
+
+        call_command("completer_sogeb", verbosity=0)  # relancer ne doit rien dupliquer
+        self.assertEqual(OrganigrammePage.objects.count(), 1)
+        self.assertEqual(self.client.get("/la-sogeb/missions/").status_code, 200)
+        organigramme = OrganigrammePage.objects.get()
+        self.assertFalse(organigramme.live)  # brouillon tant que la Direction n'a pas validé
+        self.assertEqual(self.client.get("/la-sogeb/organigramme/").status_code, 404)
+        organigramme.save_revision().publish()
+        reponse = self.client.get("/la-sogeb/organigramme/")
+        self.assertContains(reponse, "Direction générale")
+        self.assertContains(reponse, "<h1", count=1)

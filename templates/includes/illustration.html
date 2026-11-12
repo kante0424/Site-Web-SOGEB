@@ -1,0 +1,1 @@
+{% load static %}<picture><source srcset="{% static 'img/illustrations/'|add:nom|add:'.webp' %}" type="image/webp"><img src="{% static 'img/illustrations/'|add:nom|add:'.jpg' %}" alt="" width="1600" height="1000"{% if not prioritaire %} loading="lazy"{% endif %}></picture>{% include "includes/animation_"|add:nom|add:".html" %}

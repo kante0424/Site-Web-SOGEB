@@ -1,0 +1,11 @@
+{% load sogeb_tags %}
+{% if value.titre %}<h2>{{ value.titre }}</h2>{% endif %}
+<div class="grille grille--4 grille--missions">
+  {% for m in value.missions %}
+  <article class="carte carte--mission anime">
+    <span class="tuile-icone">{% icone m.icone 26 %}</span>
+    <h3>{{ m.titre }}</h3>
+    <p>{{ m.texte }}</p>
+  </article>
+  {% endfor %}
+</div>

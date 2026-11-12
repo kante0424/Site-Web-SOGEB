@@ -1,0 +1,11 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+<div class="texte-image{% if not value.image_a_droite %} texte-image--inverse{% endif %} anime">
+  <div class="texte-image__texte">
+    <h2>{{ value.titre }}</h2>
+    <div class="texte">{{ value.texte|richtext }}</div>
+  </div>
+  <figure class="visuel">
+    {% if value.image %}{% picture value.image format-{webp,jpeg} fill-900x640 loading="lazy" alt="" %}
+    {% else %}{% include "includes/illustration.html" with nom=value.illustration %}{% endif %}
+  </figure>
+</div>

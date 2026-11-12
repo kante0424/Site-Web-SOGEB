@@ -1,10 +1,31 @@
 {% extends "base.html" %}
-{% load wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags sogeb_tags %}
 {% block content %}
-{% include "includes/en_tete_page.html" with introduction=page.introduction %}
-<div class="section"><div class="conteneur conteneur--texte">
-  {% if page.image %}<figure class="figure">{% picture page.image format-{webp,jpeg} width-1200 %}</figure>{% endif %}
+{% if page.slug == "la-sogeb" or page.slug == "missions" %}{% include "includes/en_tete_page.html" with introduction=page.introduction image=page.image illustration="reseau" %}
+{% else %}{% include "includes/en_tete_page.html" with introduction=page.introduction image=page.image %}{% endif %}
+<div class="section"><div class="conteneur conteneur--large">
   {% include "includes/corps.html" with valeur=page.corps %}
 </div></div>
+{% with sous_pages=page.get_children.live.public.specific %}
+{% if sous_pages %}
+<section class="section section--teinte">
+  <div class="conteneur">
+    <header class="section__entete">
+      <h2 class="section__titre">Pour aller plus loin</h2>
+    </header>
+    <div class="grille grille--3">
+      {% for sp in sous_pages %}
+      <article class="carte carte--lien anime">
+        <span class="tuile-icone{% if forloop.counter|divisibleby:2 %} tuile-icone--or{% endif %}">{% if sp.slug == "organigramme" %}{% icone "institution" 24 %}{% elif sp.slug == "missions" %}{% icone "globe" 24 %}{% else %}{% icone "journal" 24 %}{% endif %}</span>
+        <h3><a href="{% pageurl sp %}">{{ sp.title }}</a></h3>
+        {% if sp.introduction %}<p>{{ sp.introduction|truncatewords:22 }}</p>{% endif %}
+        <span class="lien-fleche" aria-hidden="true">Découvrir {% icone "fleche" 16 %}</span>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endwith %}
 {% if page.afficher_valeurs %}{% include "includes/valeurs.html" %}{% endif %}
 {% endblock %}

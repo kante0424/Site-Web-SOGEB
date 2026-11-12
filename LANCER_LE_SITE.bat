@@ -29,6 +29,7 @@ python -m pip install -q -r requirements.txt || goto erreur
 
 echo Preparation de la base de donnees...
 python manage.py migrate --noinput -v 0 || goto erreur
+if exist .site_initialise python manage.py completer_sogeb || goto erreur
 if not exist .site_initialise (
   python manage.py initialiser_sogeb || goto erreur
   echo ok> .site_initialise

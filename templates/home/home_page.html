@@ -1,56 +1,197 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags sogeb_tags %}
+{% load static wagtailcore_tags wagtailimages_tags sogeb_tags %}
+{% block title %}{% if page.seo_title %}{{ page.seo_title }}{% else %}SOGEB – {{ page.accroche|sans_asterisques }}{% endif %}{% endblock %}
 {% block body_class %}page-accueil{% endblock %}
 {% block content %}
+{% with c=settings.core.SiteSettings %}
 <section class="hero{% if page.image_banniere %} hero--image{% endif %}">
   {% if page.image_banniere %}{% picture page.image_banniere format-{webp,jpeg} fill-1920x900 class="hero__image" alt="" fetchpriority="high" %}{% endif %}
-  <div class="conteneur hero__contenu">
-    <p class="hero__surtitre">Société de Gestion et d'Exploitation du Backbone National</p>
-    <h1>{{ page.accroche }}</h1>
-    {% if page.sous_titre %}<p class="hero__texte">{{ page.sous_titre }}</p>{% endif %}
-    {% if page.bouton_page %}<a class="bouton bouton--or" href="{% pageurl page.bouton_page %}">{{ page.bouton_texte }}</a>{% endif %}
+  <div class="conteneur hero__grille">
+    <div class="hero__texte">
+      {% if page.surtitre %}<p class="surtitre">{{ page.surtitre }}</p>{% endif %}
+      <h1>{{ page.accroche|mise_en_avant }}</h1>
+      {% if page.sous_titre %}<p class="hero__lead">{{ page.sous_titre }}</p>{% endif %}
+      <div class="hero__actions">
+        {% if page.bouton_page %}<a class="bouton bouton--or" href="{% pageurl page.bouton_page %}">{{ page.bouton_texte }} {% icone "fleche" 18 %}</a>
+        {% elif page_services %}<a class="bouton bouton--or" href="{% pageurl page_services %}">{{ page.bouton_texte }} {% icone "fleche" 18 %}</a>{% endif %}
+        {% if page.backbone_page %}<a class="bouton bouton--fantome" href="{% pageurl page.backbone_page %}">Le Backbone national</a>{% endif %}
+      </div>
+      <ul class="hero__confiance">
+        <li>{% icone "bouclier" 18 %}Infrastructure publique</li>
+        <li>{% icone "globe" 18 %}Couverture nationale</li>
+        <li>{% icone "activite" 18 %}Supervision 24h/24</li>
+      </ul>
+    </div>
+    <figure class="carte-reseau">
+      <figcaption class="carte-reseau__entete">
+        <span>Réseau Backbone – vue d'ensemble</span>
+        <span class="carte-reseau__direct"><span class="point-pulse" aria-hidden="true"></span>Schéma illustratif</span>
+      </figcaption>
+      {% include "includes/carte_guinee.html" %}
+      <div class="carte-reseau__legende" aria-hidden="true">
+        <span><i class="legende legende--nationale"></i>Liaison nationale</span>
+        <span><i class="legende legende--inter"></i>Interconnexion</span>
+        <span><i class="legende legende--ville"></i>Chef-lieu</span>
+      </div>
+    </figure>
   </div>
 </section>
 
 {% chiffres_cles as chiffres %}
 {% if chiffres %}
-<section class="bande-chiffres" aria-label="Chiffres clés">
-  <div class="conteneur"><ul class="chiffres">
-    {% for c in chiffres %}<li><span class="chiffres__valeur">{{ c.valeur }}{% if c.unite %}<small> {{ c.unite }}</small>{% endif %}</span><span class="chiffres__libelle">{{ c.libelle }}</span></li>{% endfor %}
-  </ul></div>
+<section class="chiffres-accueil" aria-label="Chiffres clés">
+  <div class="conteneur">
+    <ul class="chiffres chiffres--carte">
+      {% for ch in chiffres %}<li><span class="chiffres__valeur" data-compteur="{{ ch.valeur }}">{{ ch.valeur }}{% if ch.unite %}<small> {{ ch.unite }}</small>{% endif %}</span><span class="chiffres__libelle">{{ ch.libelle }}</span></li>{% endfor %}
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+{% if page.presentation_titre %}
+<section class="section">
+  <div class="conteneur presentation">
+    <div class="presentation__visuel anime">
+      <figure class="visuel visuel--principal">
+        {% if page.presentation_image %}{% picture page.presentation_image format-{webp,jpeg} fill-900x700 loading="lazy" alt="" %}
+        {% else %}{% include "includes/illustration.html" with nom="datacenter" %}{% endif %}
+      </figure>
+      <figure class="visuel visuel--secondaire" aria-hidden="true">{% include "includes/illustration.html" with nom="fibre" %}</figure>
+      <div class="presentation__badge"><strong>Tier III</strong><span>Data center national</span></div>
+    </div>
+    <div class="presentation__texte">
+      <p class="surtitre surtitre--vert">Qui sommes-nous</p>
+      <h2 class="section__titre">{{ page.presentation_titre }}</h2>
+      <p class="presentation__lead">{{ page.presentation_texte }}</p>
+      {% if points_presentation %}
+      <ul class="liste-coches">{% for p in points_presentation %}<li>{% icone "bouclier" 18 %}{{ p }}</li>{% endfor %}</ul>
+      {% endif %}
+      <div class="presentation__actions">
+        {% if page_sogeb %}<a class="bouton" href="{% pageurl page_sogeb %}">Découvrir la SOGEB {% icone "fleche" 18 %}</a>{% endif %}
+        {% if page_missions %}<a class="lien-fleche" href="{% pageurl page_missions %}">Nos missions {% icone "fleche" 16 %}</a>{% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if page.missions %}
+<section class="section section--teinte">
+  <div class="conteneur">
+    <header class="section__entete">
+      <h2 class="section__titre">Nos missions</h2>
+    </header>
+    <div class="grille grille--4">
+      {% for bloc in page.missions %}
+      <article class="carte carte--mission anime">
+        <span class="tuile-icone{% if forloop.counter|divisibleby:2 %} tuile-icone--or{% endif %}">{% icone bloc.value.icone 26 %}</span>
+        <h3>{{ bloc.value.titre }}</h3>
+        <p>{{ bloc.value.texte }}</p>
+      </article>
+      {% endfor %}
+    </div>
+    {% if page_missions %}<p class="section__suite"><a class="lien-fleche" href="{% pageurl page_missions %}">En savoir plus sur nos missions {% icone "fleche" 16 %}</a></p>{% endif %}
+  </div>
 </section>
 {% endif %}
 
 <section class="section">
   <div class="conteneur">
-    <h2 class="section__titre">Transport &amp; hébergement de données</h2>
-    <div class="piliers">
-      <article class="pilier">
+    <header class="section__entete">
+      <h2 class="section__titre">Transport &amp; hébergement de données</h2>
+    </header>
+    <div class="grille grille--2">
+      <article class="carte carte--pilier anime">
+        <div class="carte__vignette carte__vignette--large">
+          {% if page.backbone_page.specific.image %}{% picture page.backbone_page.specific.image format-{webp,jpeg} fill-900x480 loading="lazy" alt="" %}
+          {% else %}{% include "includes/illustration.html" with nom="fibre" %}{% endif %}
+        </div>
+        <div class="carte__corps">
+        <span class="tuile-icone">{% icone "reseau" 28 %}</span>
         <p class="etiquette">Transport</p>
-        <h3>{{ page.backbone_titre }}</h3>
+        <h3>{% if page.backbone_page %}<a href="{% pageurl page.backbone_page %}">{{ page.backbone_titre }}</a>{% else %}{{ page.backbone_titre }}{% endif %}</h3>
         <p>{{ page.backbone_texte }}</p>
-        {% if page.backbone_page %}<a class="lien-fleche" href="{% pageurl page.backbone_page %}">Découvrir le Backbone</a>{% endif %}
+        {% if page.backbone_page %}<span class="lien-fleche" aria-hidden="true">Découvrir le Backbone {% icone "fleche" 16 %}</span>{% endif %}
+        </div>
       </article>
-      <article class="pilier pilier--or">
+      <article class="carte carte--pilier carte--pilier-or anime">
+        <div class="carte__vignette carte__vignette--large">
+          {% if page.datacenter_page.specific.image %}{% picture page.datacenter_page.specific.image format-{webp,jpeg} fill-900x480 loading="lazy" alt="" %}
+          {% else %}{% include "includes/illustration.html" with nom="datacenter" %}{% endif %}
+        </div>
+        <div class="carte__corps">
+        <span class="tuile-icone tuile-icone--or">{% icone "serveur" 28 %}</span>
         <p class="etiquette">Hébergement</p>
-        <h3>{{ page.datacenter_titre }}</h3>
+        <h3>{% if page.datacenter_page %}<a href="{% pageurl page.datacenter_page %}">{{ page.datacenter_titre }}</a>{% else %}{{ page.datacenter_titre }}{% endif %}</h3>
         <p>{{ page.datacenter_texte }}</p>
-        {% if page.datacenter_page %}<a class="lien-fleche" href="{% pageurl page.datacenter_page %}">Découvrir le data center</a>{% endif %}
+        {% if page.datacenter_page %}<span class="lien-fleche" aria-hidden="true">Découvrir le data center {% icone "fleche" 16 %}</span>{% endif %}
+        </div>
       </article>
     </div>
   </div>
 </section>
 
-{% if page.corps %}<section class="section"><div class="conteneur conteneur--texte">{% include "includes/corps.html" with valeur=page.corps %}</div></section>{% endif %}
+{% if services %}
+<section class="section section--teinte">
+  <div class="conteneur">
+    <header class="section__entete section__entete--ligne">
+      <div>
+        <h2 class="section__titre">Nos services</h2>
+        <p class="section__intro">Des solutions pour les opérateurs, les entreprises et les institutions.</p>
+      </div>
+      {% if page_services %}<a class="lien-fleche" href="{% pageurl page_services %}">Tous les services {% icone "fleche" 16 %}</a>{% endif %}
+    </header>
+    <div class="grille grille--3">{% for service in services %}{% include "includes/carte_service.html" %}{% endfor %}</div>
+  </div>
+</section>
+{% endif %}
 
-{% include "includes/valeurs.html" %}
+{% if page.corps %}<section class="section"><div class="conteneur conteneur--texte">{% include "includes/corps.html" with valeur=page.corps %}</div></section>{% endif %}
 
 {% if dernieres_actualites %}
 <section class="section">
   <div class="conteneur">
-    <h2 class="section__titre">Dernières actualités</h2>
-    <div class="grille-cartes">{% for article in dernieres_actualites %}{% include "includes/carte_article.html" %}{% endfor %}</div>
+    <header class="section__entete">
+      <h2 class="section__titre">Actualités</h2>
+    </header>
+    <div class="grille grille--3">{% for article in dernieres_actualites %}{% include "includes/carte_article.html" %}{% endfor %}</div>
   </div>
 </section>
 {% endif %}
+
+{% include "includes/valeurs.html" %}
+
+{% if page_services %}
+<section class="section section--compacte">
+  <div class="conteneur profils">
+    <h2 class="profils__titre">Accès par profil</h2>
+    <ul class="profils__liste">
+      <li><a href="{% pageurl page_services %}">{% icone "antenne" 18 %}Opérateurs télécoms</a></li>
+      <li><a href="{% pageurl page_services %}">{% icone "wifi" 18 %}Fournisseurs d'accès</a></li>
+      <li><a href="{% pageurl page_services %}">{% icone "batiment" 18 %}Entreprises</a></li>
+      <li><a href="{% pageurl page_services %}">{% icone "institution" 18 %}Institutions</a></li>
+    </ul>
+  </div>
+</section>
+{% endif %}
+
+<section class="section section--appel">
+  <div class="conteneur">
+    <div class="bande-appel anime">
+      <div class="bande-appel__texte">
+        <h2>Un projet de connectivité ou d'hébergement ?</h2>
+        <p>Nos équipes étudient votre besoin et vous proposent une offre adaptée. Tarifs sur demande.</p>
+        {% if page_contact %}<a class="bouton bouton--or" href="{% pageurl page_contact %}">Nous contacter {% icone "fleche" 18 %}</a>{% endif %}
+      </div>
+      {% if c.telephone_principal or c.email_contact or c.adresse %}
+      <ul class="bande-appel__tuiles">
+        {% if c.telephone_principal %}<li>{% icone "telephone" 20 %}<span><small>Téléphone</small><a href="tel:{{ c.telephone_principal|cut:' ' }}">{{ c.telephone_principal }}</a></span></li>{% endif %}
+        {% if c.email_contact %}<li>{% icone "courriel" 20 %}<span><small>Courriel</small><a href="mailto:{{ c.email_contact }}">{{ c.email_contact }}</a></span></li>{% endif %}
+        {% if c.adresse %}<li>{% icone "lieu" 20 %}<span><small>Adresse</small>{{ c.adresse|linebreaksbr }}</span></li>{% endif %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+</section>
+{% endwith %}
 {% endblock %}

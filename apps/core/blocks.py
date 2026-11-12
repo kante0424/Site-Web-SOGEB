@@ -102,6 +102,48 @@ class DocumentsBlock(blocks.StructBlock):
         template = "blocks/documents.html"
 
 
+ICONES_MISSIONS = [
+    ("reseau", "Réseau"), ("reglages", "Réglages"), ("poignee", "Poignée de main"), ("globe", "Globe"),
+    ("serveur", "Serveur"), ("bouclier", "Bouclier"), ("antenne", "Antenne"), ("activite", "Activité"),
+]
+
+
+class MissionBlock(blocks.StructBlock):
+    icone = blocks.ChoiceBlock(choices=ICONES_MISSIONS, default="reseau")
+    titre = blocks.CharBlock(max_length=40)
+    texte = blocks.TextBlock(max_length=220)
+
+    class Meta:
+        icon = "pick"
+        label = "Mission"
+
+
+class MissionsBlock(blocks.StructBlock):
+    titre = blocks.CharBlock(max_length=120, required=False)
+    missions = blocks.ListBlock(MissionBlock(), min_num=1, max_num=8)
+
+    class Meta:
+        icon = "pick"
+        label = "Cartes de missions"
+        template = "blocks/missions.html"
+
+
+class TexteImageBlock(blocks.StructBlock):
+    titre = blocks.CharBlock(max_length=120)
+    texte = blocks.RichTextBlock(features=RICHTEXT_FEATURES)
+    image = ImageChooserBlock(required=False, help_text="Laisser vide pour afficher une illustration en attendant la photo.")
+    illustration = blocks.ChoiceBlock(
+        choices=[("reseau", "Réseau"), ("fibre", "Fibre optique"), ("datacenter", "Data center")],
+        default="reseau", help_text="Illustration affichée tant qu'aucune image n'est choisie.",
+    )
+    image_a_droite = blocks.BooleanBlock(required=False, default=True, label="Image à droite")
+
+    class Meta:
+        icon = "image"
+        label = "Texte et image côte à côte"
+        template = "blocks/texte_image.html"
+
+
 class CorpsBlock(blocks.StreamBlock):
     """Blocs disponibles dans le corps des pages."""
     paragraphe = blocks.RichTextBlock(features=RICHTEXT_FEATURES, template="blocks/paragraphe.html")
@@ -111,9 +153,29 @@ class CorpsBlock(blocks.StreamBlock):
     liste = ListeBlock()
     citation = CitationBlock()
     bouton = BoutonBlock()
+    texte_image = TexteImageBlock()
+    missions = MissionsBlock()
 
 
 class MediathequeBlock(blocks.StreamBlock):
     documents = DocumentsBlock()
     galerie = GalerieBlock()
     paragraphe = blocks.RichTextBlock(features=RICHTEXT_FEATURES, template="blocks/paragraphe.html")
+
+
+# ---------- Organigramme ----------
+class EntiteBlock(blocks.StructBlock):
+    intitule = blocks.CharBlock(max_length=120, label="Intitulé", help_text="Ex. : Direction marketing et communication")
+    sigle = blocks.CharBlock(max_length=20, required=False)
+    responsable = blocks.CharBlock(max_length=120, required=False,
+                                   help_text="Nom et fonction. Laisser vide si la publication n'est pas autorisée.")
+    photo = ImageChooserBlock(required=False)
+
+
+class DirectionBlock(EntiteBlock):
+    services = blocks.ListBlock(blocks.CharBlock(max_length=120), required=False, default=[],
+                                help_text="Départements ou services rattachés à cette direction.")
+
+    class Meta:
+        icon = "group"
+        label = "Direction"

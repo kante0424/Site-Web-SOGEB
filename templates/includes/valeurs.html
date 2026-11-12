@@ -2,10 +2,12 @@
 {% if liste_valeurs %}
 <section class="section section--teinte">
   <div class="conteneur">
-    <h2 class="section__titre">Nos valeurs</h2>
+    <header class="section__entete">
+      <h2 class="section__titre">Nos valeurs</h2>
+    </header>
     <ul class="valeurs">
       {% for v in liste_valeurs %}
-      <li class="valeur valeur--{{ v.icone }}"><strong>{{ v.nom }}</strong><span>{{ v.description }}</span></li>
+      <li class="valeur valeur--{{ v.icone }} anime"><span class="tuile-icone tuile-icone--couleur">{% icone v.icone 24 %}</span><span><strong>{{ v.nom }}</strong><span>{{ v.description }}</span></span></li>
       {% endfor %}
     </ul>
   </div>

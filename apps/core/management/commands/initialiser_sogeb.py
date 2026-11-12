@@ -8,6 +8,7 @@ officiels transmis par la Direction marketing et communication ; ils restent mod
 import json
 
 from django.contrib.auth.models import Group, Permission
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
 from django.db import transaction
 from wagtail.models import (
@@ -18,6 +19,7 @@ from wagtail.models import (
 from apps.actualites.models import NewsIndexPage
 from apps.contact.models import ContactPage, FormField
 from apps.core.models import ChiffreCle, SiteSettings, Valeur
+from apps.home.contenu_par_defaut import ACCROCHE, missions_stream
 from apps.home.models import HomePage
 from apps.medias.models import MediaPage
 from apps.pages.models import InfrastructurePage, StandardPage
@@ -137,6 +139,7 @@ class Command(BaseCommand):
             Valeur.objects.create(nom=nom, description=description, icone=icone, ordre=i)
 
         self.creer_roles(accueil)
+        call_command("completer_sogeb")
         self.stdout.write(self.style.SUCCESS("Site SOGEB initialisé."))
 
     # ------------------------------------------------------------------ pages
@@ -146,7 +149,8 @@ class Command(BaseCommand):
             seo_title="SOGEB – Backbone national à fibre optique et data center en Guinée",
             search_description="La SOGEB exploite le Backbone national à fibre optique et un data center Tier III "
                                "au service des opérateurs, entreprises et institutions de Guinée.",
-            accroche="L'infrastructure numérique nationale au service de la connectivité de la Guinée",
+            accroche=ACCROCHE,
+            missions=missions_stream(),
             sous_titre="Près de 4 500 km de fibre optique et un data center Tier III pour transporter et héberger "
                        "les données des opérateurs, des entreprises et des institutions.",
             backbone_texte="Un réseau de fibre optique qui relie les 8 gouvernorats, les 33 préfectures et plus de "

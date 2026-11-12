@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags sogeb_tags %}
+{% block content %}
+{% include "includes/en_tete_page.html" with introduction=page.introduction %}
+<section class="section">
+  <div class="conteneur">
+    <div class="organigramme">
+      <div class="organigramme__sommet">
+        <div class="entite entite--dg anime">
+          <span class="entite__avatar">{% if page.dg_photo %}{% image page.dg_photo fill-160x160 alt="" %}{% else %}{% icone "institution" 30 %}{% endif %}</span>
+          <span class="entite__texte"><strong>{{ page.dg_intitule }}</strong>{% if page.dg_responsable %}<span>{{ page.dg_responsable }}</span>{% endif %}</span>
+        </div>
+        {% if page.rattachements %}
+        <ul class="organigramme__rattachements">
+          {% for b in page.rattachements %}
+          <li class="entite entite--rattachee anime">
+            <span class="entite__texte"><strong>{{ b.value.intitule }}{% if b.value.sigle %} ({{ b.value.sigle }}){% endif %}</strong>{% if b.value.responsable %}<span>{{ b.value.responsable }}</span>{% endif %}</span>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      {% if page.directions %}
+      <ul class="organigramme__directions">
+        {% for b in page.directions %}
+        <li class="direction anime">
+          <div class="direction__entete">
+            <span class="entite__avatar entite__avatar--petit">{% if b.value.photo %}{% image b.value.photo fill-120x120 alt="" %}{% else %}{% icone "batiment" 22 %}{% endif %}</span>
+            <span class="entite__texte">
+              {% if b.value.sigle %}<span class="direction__sigle">{{ b.value.sigle }}</span>{% endif %}
+              <strong>{{ b.value.intitule }}</strong>
+              {% if b.value.responsable %}<span>{{ b.value.responsable }}</span>{% endif %}
+            </span>
+          </div>
+          {% if b.value.services %}
+          <ul class="direction__services">{% for s in b.value.services %}<li>{{ s }}</li>{% endfor %}</ul>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    {% if page.image_organigramme %}
+    <figure class="figure organigramme__image">
+      <h2>Organigramme officiel</h2>
+      {% picture page.image_organigramme format-{webp,png} width-1400 loading="lazy" %}
+    </figure>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
