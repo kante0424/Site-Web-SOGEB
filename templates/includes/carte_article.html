@@ -1,8 +1,11 @@
-{% load wagtailcore_tags wagtailimages_tags %}
-<article class="carte carte--article">
-  {% if article.image %}{% picture article.image format-{webp,jpeg} fill-640x400 loading="lazy" class="carte__image" %}{% endif %}
+{% load wagtailcore_tags wagtailimages_tags sogeb_tags %}
+<article class="carte carte--article anime">
+  <div class="carte__vignette">
+    {% if article.image %}{% picture article.image format-{webp,jpeg} fill-640x360 loading="lazy" class="carte__image" alt="" %}{% else %}<span class="carte__vignette-vide">{% icone "journal" 36 %}</span>{% endif %}
+    <span class="pastille pastille--{{ article.categorie }}">{{ article.get_categorie_display }}</span>
+  </div>
   <div class="carte__corps">
-    <p class="etiquette">{{ article.get_categorie_display }} · <time datetime="{{ article.date_publication|date:'Y-m-d' }}">{{ article.date_publication|date:"j F Y" }}</time></p>
+    <p class="carte__date"><time datetime="{{ article.date_publication|date:'Y-m-d' }}">{{ article.date_publication|date:"j F Y" }}</time></p>
     <h3 class="carte__titre"><a href="{% pageurl article %}">{{ article.title }}</a></h3>
     <p>{{ article.chapo|truncatewords:30 }}</p>
   </div>

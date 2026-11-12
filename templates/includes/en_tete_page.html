@@ -1,9 +1,13 @@
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags sogeb_tags %}{% accueil as racine %}
 <section class="bandeau">
-  <div class="conteneur">
-    {% if page.get_parent.depth > 2 %}
-    <nav class="ariane" aria-label="Fil d'Ariane"><a href="{% pageurl page.get_parent %}">{{ page.get_parent.title }}</a> / <span>{{ page.title }}</span></nav>
-    {% endif %}
+  <div class="conteneur bandeau__inner">
+    <nav class="ariane" aria-label="Fil d'Ariane">
+      <ol>
+        <li><a href="{% if racine %}{% pageurl racine %}{% else %}/{% endif %}">Accueil</a></li>
+        {% if page.get_parent.depth > 2 %}<li><a href="{% pageurl page.get_parent %}">{{ page.get_parent.title }}</a></li>{% endif %}
+        <li aria-current="page">{{ page.title }}</li>
+      </ol>
+    </nav>
     <h1>{{ page.title }}</h1>
     {% if introduction %}<p class="bandeau__intro">{{ introduction }}</p>{% endif %}
   </div>

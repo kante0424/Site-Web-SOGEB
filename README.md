@@ -48,9 +48,9 @@ page, que le formulaire de contact fonctionne et bloque les robots, et qu'un con
 | `apps/medias/` | Documents et médias |
 | `apps/contact/` | Page contact et formulaire (avec champ anti-robot) |
 | `templates/` | Gabarits HTML : `base.html`, morceaux réutilisés (`includes/`), affichage des blocs (`blocks/`) |
-| `static/` | Feuille de style aux couleurs de la charte, police Montserrat, logo, script du menu mobile |
+| `static/` | Feuille de style aux couleurs de la charte, polices Montserrat et Barlow Condensed, logo, scripts du menu mobile et des animations |
 | `docker/` | Configuration Nginx (HTTPS, en-têtes de sécurité) et emplacement des certificats |
-| `scripts/` | `sauvegarde.sh` (base + médias, 30 jours) et `deployer.sh` (mise à jour) |
+| `scripts/` | `sauvegarde.sh` (base + médias, 30 jours), `deployer.sh` (mise à jour), `generer_carte_guinee.py` (carte de l'accueil) |
 
 ### Ajouter un champ à un type de page
 

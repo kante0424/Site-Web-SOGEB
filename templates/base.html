@@ -10,7 +10,9 @@
   {% if page %}<meta property="og:title" content="{% firstof page.seo_title page.title %}">{% endif %}
   {% if page.search_description %}<meta property="og:description" content="{{ page.search_description }}">{% endif %}
   <link rel="icon" href="{% static 'img/favicon.png' %}">
-  <link rel="preload" href="{% static 'fonts/montserrat-latin-700-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/barlow-condensed-latin-800-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{% static 'fonts/montserrat-latin-400-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
+  <meta name="theme-color" content="#03341b">
   <link rel="stylesheet" href="{% static 'css/sogeb.css' %}">
   {% block extra_head %}{% endblock %}
 </head>
@@ -23,5 +25,6 @@
   </main>
   {% include "includes/pied.html" %}
   <script src="{% static 'js/menu.js' %}" defer></script>
+  <script src="{% static 'js/animations.js' %}" defer></script>
 </body>
 </html>

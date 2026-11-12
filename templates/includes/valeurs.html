@@ -2,10 +2,13 @@
 {% if liste_valeurs %}
 <section class="section section--teinte">
   <div class="conteneur">
-    <h2 class="section__titre">Nos valeurs</h2>
+    <header class="section__entete">
+      <p class="surtitre surtitre--vert">Ce qui nous guide</p>
+      <h2 class="section__titre">Nos valeurs</h2>
+    </header>
     <ul class="valeurs">
       {% for v in liste_valeurs %}
-      <li class="valeur valeur--{{ v.icone }}"><strong>{{ v.nom }}</strong><span>{{ v.description }}</span></li>
+      <li class="valeur anime"><span class="tuile-icone{% if forloop.counter|divisibleby:2 %} tuile-icone--or{% endif %}">{% icone v.icone 24 %}</span><span><strong>{{ v.nom }}</strong><span>{{ v.description }}</span></span></li>
       {% endfor %}
     </ul>
   </div>

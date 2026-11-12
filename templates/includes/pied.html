@@ -2,43 +2,52 @@
 {% with c=settings.core.SiteSettings %}
 <footer class="pied">
   <div class="conteneur pied__grille">
-    <div>
-      <img src="{% static 'img/logo-sogeb.png' %}" alt="" width="56" height="56" loading="lazy">
+    <div class="pied__marque">
+      <a class="logo logo--clair" href="{% if racine %}{% pageurl racine %}{% else %}/{% endif %}">
+        <img src="{% static 'img/logo-sogeb.png' %}" alt="" width="48" height="48" loading="lazy">
+        <span class="logo__texte"><strong>SOGEB</strong><small>Backbone National</small></span>
+      </a>
       <p class="pied__nom">Société de Gestion et d'Exploitation du Backbone National</p>
-      <p class="pied__signature">{{ c.signature }}</p>
-    </div>
-    {% if c.adresse or c.telephone_principal or c.email_contact %}
-    <div>
-      <h2 class="pied__titre">Nous joindre</h2>
-      <ul class="pied__liste">
-        {% if c.adresse %}<li>{{ c.adresse|linebreaksbr }}</li>{% endif %}
-        {% if c.telephone_principal %}<li><a href="tel:{{ c.telephone_principal|cut:' ' }}">{{ c.telephone_principal }}</a></li>{% endif %}
-        {% if c.telephone_secondaire %}<li><a href="tel:{{ c.telephone_secondaire|cut:' ' }}">{{ c.telephone_secondaire }}</a></li>{% endif %}
-        {% if c.email_contact %}<li><a href="mailto:{{ c.email_contact }}">{{ c.email_contact }}</a></li>{% endif %}
-        {% if c.horaires %}<li>{{ c.horaires }}</li>{% endif %}
+      {% if c.signature %}<p class="pied__signature">{{ c.signature }}</p>{% endif %}
+      {% if c.facebook or c.instagram or c.linkedin %}
+      <ul class="pied__reseaux" aria-label="Réseaux sociaux">
+        {% if c.linkedin %}<li><a href="{{ c.linkedin }}" rel="noopener noreferrer" target="_blank" aria-label="LinkedIn (nouvelle fenêtre)">{% icone "linkedin" 18 %}</a></li>{% endif %}
+        {% if c.facebook %}<li><a href="{{ c.facebook }}" rel="noopener noreferrer" target="_blank" aria-label="Facebook (nouvelle fenêtre)">{% icone "facebook" 18 %}</a></li>{% endif %}
+        {% if c.instagram %}<li><a href="{{ c.instagram }}" rel="noopener noreferrer" target="_blank" aria-label="Instagram (nouvelle fenêtre)">{% icone "instagram" 18 %}</a></li>{% endif %}
       </ul>
+      {% endif %}
     </div>
-    {% endif %}
     <div>
       <h2 class="pied__titre">Navigation</h2>
       <ul class="pied__liste">
         {% for item in menu %}<li><a href="{% pageurl item %}">{{ item.title }}</a></li>{% endfor %}
       </ul>
     </div>
-    {% if c.facebook or c.instagram or c.linkedin %}
     <div>
-      <h2 class="pied__titre">Suivez-nous</h2>
+      <h2 class="pied__titre">Infrastructures</h2>
       <ul class="pied__liste">
-        {% if c.facebook %}<li><a href="{{ c.facebook }}" rel="noopener" target="_blank">Facebook</a></li>{% endif %}
-        {% if c.instagram %}<li><a href="{{ c.instagram }}" rel="noopener" target="_blank">Instagram</a></li>{% endif %}
-        {% if c.linkedin %}<li><a href="{{ c.linkedin }}" rel="noopener" target="_blank">LinkedIn</a></li>{% endif %}
+        <li>Backbone national à fibre optique</li>
+        <li>Data center Tier III</li>
+        <li>Interconnexions régionales</li>
       </ul>
     </div>
-    {% endif %}
+    <div>
+      <h2 class="pied__titre">Nous joindre</h2>
+      <ul class="pied__liste pied__liste--icones">
+        {% if c.adresse %}<li>{% icone "lieu" 16 %}<span>{{ c.adresse|linebreaksbr }}</span></li>{% endif %}
+        {% if c.telephone_principal %}<li>{% icone "telephone" 16 %}<a href="tel:{{ c.telephone_principal|cut:' ' }}">{{ c.telephone_principal }}</a></li>{% endif %}
+        {% if c.telephone_secondaire %}<li>{% icone "telephone" 16 %}<a href="tel:{{ c.telephone_secondaire|cut:' ' }}">{{ c.telephone_secondaire }}</a></li>{% endif %}
+        {% if c.email_contact %}<li>{% icone "courriel" 16 %}<a href="mailto:{{ c.email_contact }}">{{ c.email_contact }}</a></li>{% endif %}
+        {% if c.horaires %}<li>{% icone "activite" 16 %}<span>{{ c.horaires }}</span></li>{% endif %}
+        {% if not c.adresse and not c.telephone_principal and not c.email_contact %}<li>Conakry, République de Guinée</li>{% endif %}
+      </ul>
+    </div>
   </div>
-  <div class="conteneur pied__bas">
-    <span>© {% now "Y" %} SOGEB S.A</span>
-    {% if racine %}{% for p in racine.get_children.live %}{% if p.slug == "mentions-legales" or p.slug == "confidentialite" %}<a href="{% pageurl p %}">{{ p.title }}</a>{% endif %}{% endfor %}{% endif %}
+  <div class="pied__bas">
+    <div class="conteneur pied__bas-inner">
+      <span>© {% now "Y" %} SOGEB S.A · Tous droits réservés</span>
+      <span class="pied__legal">{% if racine %}{% for p in racine.get_children.live %}{% if p.slug == "mentions-legales" or p.slug == "confidentialite" %}<a href="{% pageurl p %}">{{ p.title }}</a>{% endif %}{% endfor %}{% endif %}</span>
+    </div>
   </div>
 </footer>
 {% endwith %}
