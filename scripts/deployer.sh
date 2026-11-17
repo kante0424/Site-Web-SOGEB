@@ -9,6 +9,7 @@ echo "3/5 Construction de l'application"
 docker compose build app
 echo "4/5 Migrations de la base de données"
 docker compose run --rm app python manage.py migrate --noinput
+docker compose run --rm app python manage.py completer_sogeb
 echo "5/5 Redémarrage de l'application"
 docker compose up -d app nginx
 docker compose exec nginx nginx -s reload

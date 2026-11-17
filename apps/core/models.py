@@ -4,6 +4,11 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail.snippets.models import register_snippet
 
+MISSION = ("Être le socle de la transformation digitale et du développement de l'économie numérique "
+           "en République de Guinée.")
+VISION = ("Leader du transport des données en République de Guinée, notre vision est d'être "
+          "l'entreprise publique la plus performante de la République de Guinée.")
+
 
 @register_setting(icon="site")
 class SiteSettings(BaseSiteSetting):
@@ -17,6 +22,10 @@ class SiteSettings(BaseSiteSetting):
     facebook = models.URLField(blank=True)
     instagram = models.URLField(blank=True)
     linkedin = models.URLField(blank=True)
+    mission = models.TextField(
+        "Notre mission", blank=True, default=MISSION,
+        help_text="Affichée avec la vision et les valeurs sur l'accueil et la page « La SOGEB ».")
+    vision = models.TextField("Notre vision", blank=True, default=VISION)
 
     panels = [
         FieldPanel("signature"),
@@ -25,6 +34,7 @@ class SiteSettings(BaseSiteSetting):
              FieldPanel("email_contact"), FieldPanel("horaires"), FieldPanel("lien_carte")],
             heading="Coordonnées officielles",
         ),
+        MultiFieldPanel([FieldPanel("mission"), FieldPanel("vision")], heading="Mission et vision"),
         MultiFieldPanel([FieldPanel("facebook"), FieldPanel("instagram"), FieldPanel("linkedin")], heading="Réseaux sociaux"),
     ]
 

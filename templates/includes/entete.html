@@ -1,10 +1,23 @@
 {% load static wagtailcore_tags sogeb_tags %}{% accueil as racine %}{% menu_principal as menu %}
+{% with c=settings.core.SiteSettings %}
+<div class="bande-drapeau" aria-hidden="true"></div>
+<div class="barre-haut">
+  <div class="conteneur barre-haut__inner">
+    <p class="barre-haut__mention">République de Guinée <span aria-hidden="true">·</span> Site officiel de la SOGEB</p>
+    {% if c.telephone_principal or c.email_contact %}
+    <ul class="barre-haut__contacts">
+      {% if c.telephone_principal %}<li><a href="tel:{{ c.telephone_principal|cut:' ' }}">{% icone "telephone" 14 %}{{ c.telephone_principal }}</a></li>{% endif %}
+      {% if c.email_contact %}<li><a href="mailto:{{ c.email_contact }}">{% icone "courriel" 14 %}{{ c.email_contact }}</a></li>{% endif %}
+    </ul>
+    {% endif %}
+  </div>
+</div>
 <header class="entete">
   <div class="conteneur entete__inner">
     <a class="logo" href="{% if racine %}{% pageurl racine %}{% else %}/{% endif %}" aria-label="SOGEB, retour à l'accueil">
       <picture>
         <source srcset="{% static 'img/logo-sogeb.webp' %}" type="image/webp">
-        <img src="{% static 'img/logo-sogeb.png' %}" alt="Logo de la SOGEB" width="64" height="64">
+        <img src="{% static 'img/logo-sogeb.png' %}" alt="" width="52" height="52">
       </picture>
       <span class="logo__texte"><strong>SOGEB</strong><small>Backbone National</small></span>
     </a>
@@ -14,9 +27,23 @@
     <nav id="menu-principal" class="menu" aria-label="Navigation principale">
       <ul>
         {% for item in menu %}
-          <li><a href="{% pageurl item %}"{% if page and item|est_dans:page %} aria-current="page"{% endif %}>{{ item.title }}</a></li>
+          {% if not item|est_contact %}
+          {% with enfants=item.get_children.live.public.in_menu %}
+          <li{% if enfants %} class="menu__groupe"{% endif %}><a href="{% pageurl item %}"{% if page and item|est_dans:page %} aria-current="page"{% endif %}>{{ item.title }}</a>
+            {% if enfants %}
+            <ul class="sous-menu">
+              {% for e in enfants %}<li><a href="{% pageurl e %}"{% if page and page.pk == e.pk %} aria-current="page"{% endif %}>{{ e.title }}</a></li>{% endfor %}
+            </ul>
+            {% endif %}
+          </li>
+          {% endwith %}
+          {% endif %}
         {% endfor %}
       </ul>
+      {% for item in menu %}{% if item|est_contact %}
+      <a class="bouton bouton--vert menu__contact" href="{% pageurl item %}"{% if page and item|est_dans:page %} aria-current="page"{% endif %}>Nous contacter</a>
+      {% endif %}{% endfor %}
     </nav>
   </div>
 </header>
+{% endwith %}
