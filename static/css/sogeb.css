@@ -15,9 +15,9 @@
 
 :root {
   /* Verts */
-  --vert-900: #03341b;
-  --vert-800: #064d28;
-  --vert-700: #087236;
+  --vert-900: #06472a;
+  --vert-800: #0a5e33;
+  --vert-700: #0b803d;
   --vert-600: #0d9541; /* vert de la charte */
   --vert-100: #e3f3e9;
   --vert-50: #f2faf5;
@@ -164,31 +164,31 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
 .hero__texte > :nth-child(5) { animation-delay: .32s; }
 @keyframes hero-entree { from { opacity: 0; transform: translateY(18px); } }
 
-/* Carte vitrée qui entoure la carte de Guinée */
-.carte-reseau { margin: 0; background: linear-gradient(135deg, var(--vert-900), var(--vert-800)); box-shadow: var(--ombre-forte); border: 1px solid rgba(255, 255, 255, .12); border-radius: 14px; padding: 1rem 1rem .9rem;  animation: hero-entree 1s .2s cubic-bezier(.2, .7, .2, 1) both; }
-.carte-reseau__entete { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: .78rem; font-weight: 700; color: #e3f1e8; text-transform: uppercase; letter-spacing: .08em; padding: .1rem .3rem .5rem; }
-.carte-reseau__direct { display: inline-flex; align-items: center; gap: .5rem; color: #9cc4ad; font-weight: 600; text-transform: none; letter-spacing: 0; }
-.point-pulse { width: 8px; height: 8px; border-radius: 50%; background: #3ee07a; box-shadow: 0 0 0 0 rgba(62, 224, 122, .6); animation: pulse 2s infinite; }
-@keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(62, 224, 122, 0); } 100% { box-shadow: 0 0 0 0 rgba(62, 224, 122, 0); } }
-.carte-reseau__legende { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; padding: .7rem .3rem 0; border-top: 1px solid rgba(255, 255, 255, .12); font-size: .75rem; color: #cfe6d8; }
+/* Carte de Guinée sur fond blanc : seuls le pays et le tracé du réseau sont en vert */
+.carte-reseau { margin: 0; background: #fff; box-shadow: var(--ombre-forte); border: 1px solid var(--ligne); border-radius: 14px; padding: 1rem 1rem .9rem;  animation: hero-entree 1s .2s cubic-bezier(.2, .7, .2, 1) both; }
+.carte-reseau__entete { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: .78rem; font-weight: 700; color: var(--vert-800); text-transform: uppercase; letter-spacing: .08em; padding: .1rem .3rem .5rem; }
+.carte-reseau__direct { display: inline-flex; align-items: center; gap: .5rem; color: var(--encre-3); font-weight: 600; text-transform: none; letter-spacing: 0; }
+.point-pulse { width: 8px; height: 8px; border-radius: 50%; background: #1fbf5c; box-shadow: 0 0 0 0 rgba(31, 191, 92, .6); animation: pulse 2s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(31, 191, 92, 0); } 100% { box-shadow: 0 0 0 0 rgba(31, 191, 92, 0); } }
+.carte-reseau__legende { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; padding: .7rem .3rem 0; border-top: 1px solid var(--ligne); font-size: .75rem; color: var(--encre-2); }
 .carte-reseau__legende span { display: inline-flex; align-items: center; gap: .45rem; }
-.legende { display: inline-block; width: 18px; height: 3px; border-radius: 2px; background: var(--or-500); }
-.legende--inter { background: repeating-linear-gradient(90deg, #9cc4ad 0 4px, transparent 4px 7px); }
+.legende { display: inline-block; width: 18px; height: 3px; border-radius: 2px; background: var(--vert-700); }
+.legende--inter { background: repeating-linear-gradient(90deg, #8aa596 0 4px, transparent 4px 7px); }
 .legende--ville { width: 9px; height: 9px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 2px var(--vert-600); }
 
 /* ---------- Carte de Guinée (SVG) ---------- */
 .carte-guinee { display: block; width: 100%; height: auto; overflow: visible; }
-.carte-guinee__pays { fill: rgba(13, 149, 65, .22); stroke: rgba(255, 255, 255, .55); stroke-width: 1.6; stroke-linejoin: round; }
-.carte-guinee__international path { fill: none; stroke: #9cc4ad; stroke-width: 1.6; stroke-dasharray: 5 6; opacity: .8; }
-.carte-guinee__international-noms text { fill: #9cc4ad; font: 600 15px var(--police); letter-spacing: .02em; }
-.carte-guinee__liens path { fill: none; stroke: var(--or-500); stroke-width: 2.2; stroke-linecap: round; opacity: .9; }
-.carte-guinee__flux path { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 4 22; opacity: .85; animation: flux 2.2s linear infinite; animation-delay: calc(var(--j, 0) * -.4s); }
+.carte-guinee__pays { fill: #cfeedb; stroke: var(--vert-600); stroke-width: 1.8; stroke-linejoin: round; }
+.carte-guinee__international path { fill: none; stroke: #8aa596; stroke-width: 1.6; stroke-dasharray: 5 6; opacity: .9; }
+.carte-guinee__international-noms text { fill: #6b8577; font: 600 15px var(--police); letter-spacing: .02em; }
+.carte-guinee__liens path { fill: none; stroke: var(--vert-700); stroke-width: 2.4; stroke-linecap: round; opacity: .95; }
+.carte-guinee__flux path { fill: none; stroke: #fff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 4 22; opacity: .9; animation: flux 2.2s linear infinite; animation-delay: calc(var(--j, 0) * -.4s); }
 @keyframes flux { to { stroke-dashoffset: -52; } }
 .carte-guinee__villes circle { fill: #fff; stroke: var(--vert-600); stroke-width: 2; transform-box: fill-box; transform-origin: center; }
-.carte-guinee__villes circle.majeure { fill: var(--or-500); stroke: #fff; stroke-width: 2.2; }
-.carte-guinee__villes circle.hub { fill: var(--or-500); stroke: #fff; stroke-width: 3; animation: hub 2.4s ease-out infinite; }
+.carte-guinee__villes circle.majeure { fill: var(--vert-600); stroke: #fff; stroke-width: 2.2; }
+.carte-guinee__villes circle.hub { fill: var(--vert-600); stroke: var(--vert-600); stroke-width: 3; animation: hub 2.4s ease-out infinite; }
 @keyframes hub { 0% { stroke-width: 3; stroke-opacity: 1; } 70% { stroke-width: 14; stroke-opacity: 0; } 100% { stroke-width: 3; stroke-opacity: 0; } }
-.carte-guinee__noms text { fill: #fff; font: 700 17px var(--police); paint-order: stroke; stroke: rgba(3, 52, 27, .85); stroke-width: 4px; stroke-linejoin: round; }
+.carte-guinee__noms text { fill: var(--vert-900); font: 700 17px var(--police); paint-order: stroke; stroke: rgba(255, 255, 255, .92); stroke-width: 4px; stroke-linejoin: round; }
 
 /* Animation du tracé : uniquement si le script a préparé la carte (voir animations.js) */
 .carte-guinee--attente .carte-guinee__liens path { stroke-dasharray: 1; stroke-dashoffset: 1; }
@@ -271,18 +271,15 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
 .carte--article h3 { font-size: 1.3rem; }
 
 /* ---------- Valeurs (une couleur par valeur) ---------- */
-/* Mission et vision, juste avant les valeurs */
-.cap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-bottom: clamp(2.5rem, 5vw, 3.75rem); }
-.cap__bloc { position: relative; border-radius: var(--rayon); padding: clamp(1.6rem, 3vw, 2.4rem); display: grid; grid-template-columns: auto 1fr; column-gap: 1.2rem; align-items: start; }
-.cap__bloc .tuile-icone { grid-row: span 2; width: 54px; height: 54px; margin: 0; border-radius: 14px; }
-.cap__bloc h2 { font-size: clamp(1.6rem, 2.4vw, 2rem); margin: 0 0 .5rem; }
-.cap__bloc p { margin: 0; font-size: 1.08rem; line-height: 1.6; }
-.cap__bloc--mission { background: linear-gradient(135deg, var(--vert-800), var(--vert-700)); color: #e3f1e8; }
-.cap__bloc--mission h2 { color: #fff; }
-.cap__bloc--mission .tuile-icone { background: var(--or-500); color: var(--vert-900); }
-.cap__bloc--vision { background: #fff; border: 1px solid var(--ligne); color: var(--encre-2); }
-.cap__bloc--vision h2 { color: var(--vert-800); }
-.cap__bloc--vision .tuile-icone { background: var(--vert-600); color: #fff; }
+/* Mission et vision : deux cartes alignées, juste avant les valeurs */
+.cap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; align-items: stretch; margin-bottom: clamp(2.5rem, 5vw, 3.75rem); }
+.cap__bloc { background: #fff; border: 1px solid var(--ligne); border-radius: var(--rayon); box-shadow: var(--ombre); padding: clamp(1.5rem, 2.6vw, 2.1rem); display: flex; flex-direction: column; gap: .9rem; transition: transform .25s, box-shadow .25s, border-color .25s; }
+.cap__bloc:hover { transform: translateY(-4px); box-shadow: var(--ombre-forte); border-color: #b9d9c6; }
+.cap__bloc .tuile-icone { width: 54px; height: 54px; margin: 0; border-radius: 14px; color: #fff; }
+.cap__bloc--mission .tuile-icone { background: var(--vert-600); }
+.cap__bloc--vision .tuile-icone { background: #b7790a; }
+.cap__bloc h2 { font-size: clamp(1.5rem, 2.2vw, 1.85rem); color: var(--vert-800); margin: 0; }
+.cap__bloc p { margin: 0; font-size: 1.05rem; line-height: 1.6; color: var(--encre-2); }
 @media (max-width: 760px) { .cap { grid-template-columns: 1fr; } }
 .valeurs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .valeur { transition: transform .25s, box-shadow .25s, border-color .25s; --c1: var(--vert-600); --c2: #3cc27a; --fond-c: var(--vert-50); position: relative; overflow: hidden; background: #fff; border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 1.6rem 1.5rem 1.5rem; display: flex; gap: 1.1rem; align-items: flex-start; transition: transform .25s, box-shadow .25s, background-color .25s; }

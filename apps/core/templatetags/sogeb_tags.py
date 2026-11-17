@@ -1,3 +1,8 @@
+import os
+
+from django.conf import settings
+from django.contrib.staticfiles import finders
+from django.templatetags.static import static
 from django import template
 from wagtail.models import Site
 
@@ -108,3 +113,16 @@ def sans_asterisques(texte):
 def est_contact(page):
     """Vrai pour la page Contact, affichée en bouton à part dans l'en-tête."""
     return type(page).__name__ == "ContactPage"
+
+
+@register.simple_tag
+def static_frais(chemin):
+    """URL d'un fichier statique qui change dès que le fichier change, pour que le navigateur ne garde pas
+    une ancienne version en cache (poste de développement, lien de démonstration). En production, les noms de fichiers
+    contiennent déjà une empreinte (ManifestStaticFilesStorage) : on ne touche à rien."""
+    url = static(chemin)
+    if "Manifest" not in settings.STORAGES["staticfiles"]["BACKEND"]:
+        fichier = finders.find(chemin)
+        if fichier:
+            url = f"{url}?v={int(os.path.getmtime(fichier))}"
+    return url

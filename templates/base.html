@@ -13,7 +13,7 @@
   <link rel="preload" href="{% static 'fonts/barlow-condensed-latin-800-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="{% static 'fonts/montserrat-latin-400-normal.woff2' %}" as="font" type="font/woff2" crossorigin>
   <meta name="theme-color" content="#03341b">
-  <link rel="stylesheet" href="{% static 'css/sogeb.css' %}">
+  <link rel="stylesheet" href="{% static_frais 'css/sogeb.css' %}">
   {% block extra_head %}{% endblock %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
@@ -24,7 +24,7 @@
     {% block content %}{% endblock %}
   </main>
   {% include "includes/pied.html" %}
-  <script src="{% static 'js/menu.js' %}" defer></script>
-  <script src="{% static 'js/animations.js' %}" defer></script>
+  <script src="{% static_frais 'js/menu.js' %}" defer></script>
+  <script src="{% static_frais 'js/animations.js' %}" defer></script>
 </body>
 </html>
