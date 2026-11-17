@@ -1,7 +1,22 @@
-{% load sogeb_tags %}{% valeurs as liste_valeurs %}
-{% if liste_valeurs %}
+{% load sogeb_tags %}{% valeurs as liste_valeurs %}{% with c=settings.core.SiteSettings %}
+{% if liste_valeurs or c.mission or c.vision %}
 <section class="section section--teinte">
   <div class="conteneur">
+    {% if c.mission or c.vision %}
+    <div class="cap">
+      {% if c.mission %}<article class="cap__bloc cap__bloc--mission anime">
+        <span class="tuile-icone">{% icone "globe" 26 %}</span>
+        <h2>Notre mission</h2>
+        <p>{{ c.mission }}</p>
+      </article>{% endif %}
+      {% if c.vision %}<article class="cap__bloc cap__bloc--vision anime">
+        <span class="tuile-icone">{% icone "activite" 26 %}</span>
+        <h2>Notre vision</h2>
+        <p>{{ c.vision }}</p>
+      </article>{% endif %}
+    </div>
+    {% endif %}
+    {% if liste_valeurs %}
     <header class="section__entete">
       <h2 class="section__titre">Nos valeurs</h2>
     </header>
@@ -10,6 +25,7 @@
       <li class="valeur valeur--{{ v.icone }} anime"><span class="tuile-icone tuile-icone--couleur">{% icone v.icone 24 %}</span><span><strong>{{ v.nom }}</strong><span>{{ v.description }}</span></span></li>
       {% endfor %}
     </ul>
+    {% endif %}
   </div>
 </section>
-{% endif %}
+{% endif %}{% endwith %}

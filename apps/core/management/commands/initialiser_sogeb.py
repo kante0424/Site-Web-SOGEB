@@ -42,6 +42,7 @@ def liste(titre, elements):
 CHIFFRES = [
     ("4 500", "km", "de fibre optique"),
     ("33", "", "préfectures raccordées"),
+    ("+45", "", "localités d'importance économique"),
     ("62", "", "points d'interconnexion nationaux"),
     ("1 000", "To", "de stockage au data center"),
 ]
@@ -58,7 +59,7 @@ VALEURS = [
 SERVICES = [
     ("backbone", "Liaisons louées nationales", "liaisons-louees-nationales",
      "Des capacités de transmission point à point, de 50 Mbps à 200 Gbps, entre deux sites du territoire national.",
-     "Opérateurs de télécommunications, fournisseurs d'accès Internet, entités autorisées par l'ARPT",
+     "Opérateurs de télécommunications, FAI, entités autorisées par l'ARPT",
      [section("Le service",
               "Le service de liaisons louées nationales met à disposition des capacités de transmission de données "
               "entre deux sites géographiques de la République de Guinée, sur les infrastructures de transport à fibre "
@@ -71,21 +72,21 @@ SERVICES = [
       liste("Technologies", ["SDH (STM-1 à STM-64)", "DWDM jusqu'à 200 Gbps", "Ethernet / IP / MPLS"])]),
     ("backbone", "Capacité internationale et transit IP", "capacite-internationale-transit-ip",
      "Un accès à la capacité internationale et au transit IP grâce aux interconnexions transfrontalières du Backbone.",
-     "Opérateurs, fournisseurs d'accès Internet",
+     "Opérateurs, FAI",
      [section("Le service",
               "Le Backbone national est interconnecté aux réseaux des pays voisins : Guinée-Bissau, Sénégal, Mali, "
               "Côte d'Ivoire, Libéria et Sierra Leone. La SOGEB propose l'accès à la capacité internationale et le "
               "transit IP international aux opérateurs autorisés.")]),
     ("backbone", "Colocation et partage d'infrastructures", "colocation-partage-infrastructures",
      "L'hébergement d'équipements dans les sites techniques de la SOGEB et le partage d'infrastructures entre opérateurs.",
-     "Opérateurs, fournisseurs d'accès Internet",
+     "Opérateurs, FAI",
      [section("Le service",
               "La colocation d'interconnexion permet aux opérateurs d'installer leurs équipements dans les points "
               "d'interconnexion de la SOGEB, avec l'énergie sécurisée et la supervision du NOC. Le service de "
               "cross-connexion relie directement les équipements de deux opérateurs présents sur un même site.")]),
     ("datacenter", "Colocation de racks", "colocation-racks",
      "Des espaces sécurisés au data center Tier III pour héberger vos serveurs et équipements réseau.",
-     "Entreprises, institutions, opérateurs",
+     "Entreprises, institutions, opérateurs, FAI",
      [section("Le service",
               "Le data center SOGEB de niveau Tier III accueille les équipements de ses clients dans des salles "
               "sécurisées, avec une alimentation électrique redondante, le refroidissement des serveurs et un accès "
@@ -103,7 +104,7 @@ SERVICES = [
                                   "GED, GEC, CRM, CMS", "DNS", "Streaming"])]),
     ("datacenter", "Services managés SOC et NOC", "services-manages-soc-noc",
      "Supervision 24 h/24 et 7 j/7 de vos réseaux et protection de vos systèmes par nos équipes.",
-     "Entreprises, institutions, opérateurs",
+     "Entreprises, institutions, opérateurs, FAI",
      [section("Le service",
               "Le centre de supervision réseau (NOC) surveille en continu les liens, serveurs et équipements. "
               "Le centre de sécurité (SOC) contrôle le trafic et prévient les intrusions grâce à des pare-feu de "

@@ -6,9 +6,10 @@
 <div class="section"><div class="conteneur conteneur--large">
   {% include "includes/corps.html" with valeur=page.corps %}
 </div></div>
+{% if page.afficher_valeurs %}{% include "includes/valeurs.html" %}{% endif %}
 {% with sous_pages=page.get_children.live.public.specific %}
 {% if sous_pages %}
-<section class="section section--teinte">
+<section class="section{% if not page.afficher_valeurs %} section--teinte{% endif %}">
   <div class="conteneur">
     <header class="section__entete">
       <h2 class="section__titre">Pour aller plus loin</h2>
@@ -27,5 +28,4 @@
 </section>
 {% endif %}
 {% endwith %}
-{% if page.afficher_valeurs %}{% include "includes/valeurs.html" %}{% endif %}
 {% endblock %}

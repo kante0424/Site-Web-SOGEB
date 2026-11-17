@@ -47,6 +47,11 @@
   --haut-entete: 78px;
 }
 
+/* Grands écrans : le contenu s'élargit et le texte grandit un peu, pour ne pas laisser
+   une colonne étroite perdue au milieu de l'écran. */
+@media (min-width: 1600px) { :root { --largeur: 1400px; --largeur-texte: 820px; } html { font-size: 106.25%; } }
+@media (min-width: 2100px) { :root { --largeur: 1640px; --largeur-texte: 880px; } html { font-size: 118.75%; } }
+
 /* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: calc(var(--haut-entete) + 12px); }
@@ -139,17 +144,19 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
 .etiquette { text-transform: uppercase; letter-spacing: .1em; font-size: .72rem; font-weight: 700; color: var(--vert-600); margin-bottom: .45rem; }
 
 /* ---------- Hero d'accueil ---------- */
-.hero { position: relative; color: #fff; overflow: hidden; isolation: isolate;
-  background: linear-gradient(135deg, var(--vert-900), var(--vert-800)); }
-.hero--image .hero__image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: .22; mix-blend-mode: luminosity; }
+.hero { position: relative; color: var(--encre-2); overflow: hidden; isolation: isolate; background: #fff; }
+.hero--image .hero__image img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: .08; filter: grayscale(1); }
 .hero__grille { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2rem, 4vw, 3.5rem); align-items: center; padding-block: clamp(3rem, 7vw, 5.5rem) clamp(5rem, 9vw, 7rem); }
-.hero h1 { color: #fff; max-width: 15ch; }
-.hero h1 em { font-style: normal; color: var(--or-500); }
-.hero__lead { font-size: 1.08rem; max-width: 52ch; color: #d8eadf; }
+.hero h1 { color: var(--vert-800); max-width: 15ch; }
+.hero h1 em { font-style: normal; color: var(--vert-600); }
+.hero__lead { font-size: 1.08rem; max-width: 52ch; color: var(--vert-700); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: .8rem; margin: 1.8rem 0 2.2rem; }
-.hero__confiance { list-style: none; margin: 0; padding: 1.4rem 0 0; display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; font-size: .86rem; color: #cfe6d8; font-weight: 600; }
+.hero__confiance { list-style: none; margin: 0; padding: 1.4rem 0 0; display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; font-size: .86rem; color: var(--vert-700); font-weight: 600; }
 .hero__confiance li { display: inline-flex; align-items: center; gap: .5rem; }
-.hero__confiance .icone { color: var(--or-500); }
+.hero__confiance .icone { color: var(--vert-600); }
+.hero .surtitre { color: var(--vert-600); }
+.hero .bouton--fantome { background: #fff; border-color: var(--vert-600); color: var(--vert-700); }
+.hero .bouton--fantome:hover { background: var(--vert-50); border-color: var(--vert-700); color: var(--vert-800); }
 .hero__texte > * { animation: hero-entree .8s cubic-bezier(.2, .7, .2, 1) both; }
 .hero__texte > :nth-child(2) { animation-delay: .08s; }
 .hero__texte > :nth-child(3) { animation-delay: .16s; }
@@ -158,7 +165,7 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
 @keyframes hero-entree { from { opacity: 0; transform: translateY(18px); } }
 
 /* Carte vitrée qui entoure la carte de Guinée */
-.carte-reseau { margin: 0; background: rgba(0, 0, 0, .14); border: 1px solid rgba(255, 255, 255, .12); border-radius: 14px; padding: 1rem 1rem .9rem;  animation: hero-entree 1s .2s cubic-bezier(.2, .7, .2, 1) both; }
+.carte-reseau { margin: 0; background: linear-gradient(135deg, var(--vert-900), var(--vert-800)); box-shadow: var(--ombre-forte); border: 1px solid rgba(255, 255, 255, .12); border-radius: 14px; padding: 1rem 1rem .9rem;  animation: hero-entree 1s .2s cubic-bezier(.2, .7, .2, 1) both; }
 .carte-reseau__entete { display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-size: .78rem; font-weight: 700; color: #e3f1e8; text-transform: uppercase; letter-spacing: .08em; padding: .1rem .3rem .5rem; }
 .carte-reseau__direct { display: inline-flex; align-items: center; gap: .5rem; color: #9cc4ad; font-weight: 600; text-transform: none; letter-spacing: 0; }
 .point-pulse { width: 8px; height: 8px; border-radius: 50%; background: #3ee07a; box-shadow: 0 0 0 0 rgba(62, 224, 122, .6); animation: pulse 2s infinite; }
@@ -205,8 +212,8 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
 .chiffres__valeur { font-family: var(--titres); font-size: clamp(2.3rem, 4vw, 2.85rem); font-weight: 800; color: var(--vert-700); font-variant-numeric: tabular-nums; line-height: 1; white-space: nowrap; }
 .chiffres__valeur small { font-size: .55em; font-weight: 700; color: var(--or-500); }
 .chiffres__libelle { font-size: .9rem; color: var(--encre-3); font-weight: 600; margin-top: .35rem; }
-.chiffres--carte { background: #fff; border-radius: var(--rayon); box-shadow: var(--ombre-forte); border: 1px solid var(--ligne); grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; padding: 1.6rem .5rem; }
-.chiffres--carte li { padding: .3rem 1.6rem; border-left: 1px solid var(--ligne); }
+.chiffres--carte { background: #fff; border-radius: var(--rayon); box-shadow: var(--ombre-forte); border: 1px solid var(--ligne); grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 0; padding: 1.6rem .5rem; }
+.chiffres--carte li { padding: .3rem clamp(1rem, 1.6vw, 1.6rem); border-left: 1px solid var(--ligne); }
 .chiffres--carte li:first-child { border-left: 0; }
 .bloc--chiffres .chiffres { background: var(--vert-900); padding: 1.6rem; border-radius: var(--rayon); grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
 .bloc--chiffres .chiffres__valeur { color: #fff; }
@@ -264,6 +271,19 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
 .carte--article h3 { font-size: 1.3rem; }
 
 /* ---------- Valeurs (une couleur par valeur) ---------- */
+/* Mission et vision, juste avant les valeurs */
+.cap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; margin-bottom: clamp(2.5rem, 5vw, 3.75rem); }
+.cap__bloc { position: relative; border-radius: var(--rayon); padding: clamp(1.6rem, 3vw, 2.4rem); display: grid; grid-template-columns: auto 1fr; column-gap: 1.2rem; align-items: start; }
+.cap__bloc .tuile-icone { grid-row: span 2; width: 54px; height: 54px; margin: 0; border-radius: 14px; }
+.cap__bloc h2 { font-size: clamp(1.6rem, 2.4vw, 2rem); margin: 0 0 .5rem; }
+.cap__bloc p { margin: 0; font-size: 1.08rem; line-height: 1.6; }
+.cap__bloc--mission { background: linear-gradient(135deg, var(--vert-800), var(--vert-700)); color: #e3f1e8; }
+.cap__bloc--mission h2 { color: #fff; }
+.cap__bloc--mission .tuile-icone { background: var(--or-500); color: var(--vert-900); }
+.cap__bloc--vision { background: #fff; border: 1px solid var(--ligne); color: var(--encre-2); }
+.cap__bloc--vision h2 { color: var(--vert-800); }
+.cap__bloc--vision .tuile-icone { background: var(--vert-600); color: #fff; }
+@media (max-width: 760px) { .cap { grid-template-columns: 1fr; } }
 .valeurs { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; }
 .valeur { transition: transform .25s, box-shadow .25s, border-color .25s; --c1: var(--vert-600); --c2: #3cc27a; --fond-c: var(--vert-50); position: relative; overflow: hidden; background: #fff; border: 1px solid var(--ligne); border-radius: var(--rayon); padding: 1.6rem 1.5rem 1.5rem; display: flex; gap: 1.1rem; align-items: flex-start; transition: transform .25s, box-shadow .25s, background-color .25s; }
 .valeur:hover { transform: translateY(-4px); box-shadow: var(--ombre); border-color: var(--c1); }
@@ -515,8 +535,9 @@ p > .lien-fleche:only-child::after, .appel .lien-fleche::after { content: none; 
   .carte-reseau { max-width: 620px; width: 100%; justify-self: center; }
   .grille--3, .grille-cartes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .valeurs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .chiffres--carte { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.4rem; }
+  .chiffres--carte { grid-auto-flow: row; grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.4rem; }
   .chiffres--carte li:nth-child(odd) { border-left: 0; }
+  .chiffres--carte li:last-child:nth-child(odd) { grid-column: 1 / -1; }
   .bande-appel { grid-template-columns: 1fr; }
   .pied__grille { grid-template-columns: 1fr 1fr; }
   .contact { grid-template-columns: 1fr; }
